@@ -13,6 +13,7 @@ import android.bluetooth.le.ScanCallback;
 import android.bluetooth.le.ScanFilter;
 import android.bluetooth.le.ScanResult;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
@@ -43,7 +44,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    String ip = "192.168.0.14";
+    String ip = "192.168.43.164";
 
     // --------------------------------------------------------------
     // --------------------------------------------------------------
@@ -72,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //Librería encargada ser cocentarse con el Servidor
@@ -189,8 +191,6 @@ public class MainActivity extends AppCompatActivity {
         //Obtenemos los datos que se envían por el Major y el Minor
         major_datos = (Utilidades.bytesToInt(tib.getMajor()));
         minor_datos = (Utilidades.bytesToInt(tib.getMinor()));
-        //datos_major.setText((int) major_datos);
-        //datos_minor.setText(minor_datos);
 
         Log.d(ETIQUETA_LOG, " -------------------- DATOS -------------------- ");
         //Log.d(ETIQUETA_LOG, " prefijo  = " + Utilidades.bytesToHexString(tib.getPrefijo()));
