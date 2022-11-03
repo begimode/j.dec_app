@@ -20,8 +20,8 @@
         android:layout_marginTop="12dp"
         android:fontFamily="@font/yahei"
         android:text="¿Has olvidado tu contraseña?"
-        app:layout_constraintEnd_toEndOf="@+id/editTextApellido"
-        app:layout_constraintTop_toBottomOf="@+id/editTextApellido" />
+        app:layout_constraintEnd_toEndOf="@+id/editTextPass"
+        app:layout_constraintTop_toBottomOf="@+id/editTextPass" />
 
     <TextView
         android:id="@+id/textView3"
@@ -46,7 +46,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
     <EditText
-        android:id="@+id/editTextApellido"
+        android:id="@+id/editTextPass"
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_marginStart="30dp"
@@ -63,7 +63,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextCorreo" />
 
     <Button
         android:id="@+id/button_login"
@@ -78,7 +78,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextApellido"
+        app:layout_constraintTop_toBottomOf="@+id/editTextPass"
         app:layout_constraintVertical_bias="0.0"
 
         android:bottomLeftRadius="70dp"
@@ -87,7 +87,7 @@
         android:topRightRadius="70dp"/>
 
     <EditText
-        android:id="@+id/editTextTextPersonName"
+        android:id="@+id/editTextCorreo"
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_marginStart="30dp"

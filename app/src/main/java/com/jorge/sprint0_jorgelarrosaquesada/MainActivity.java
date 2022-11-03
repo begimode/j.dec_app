@@ -1,5 +1,6 @@
 package com.jorge.sprint0_jorgelarrosaquesada;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -14,14 +15,17 @@ import android.bluetooth.le.ScanFilter;
 import android.bluetooth.le.ScanResult;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
@@ -35,6 +39,10 @@ import org.json.JSONObject;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
+
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 //----------------------------------------------------
 // Archivo: MainActivity.java
@@ -44,7 +52,16 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    String ip = "192.168.43.164";
+    String ip = "192.168.0.14";
+    private int ultimaMedida;
+
+    // --------------------------------------------------------------
+    // --------------------------------------------------------------
+    //Sirve para guardar datos permanentes
+    SharedPreferences myPreferences;
+    SharedPreferences.Editor myEditor;
+    Boolean sesion;
+    ImageView devices;
 
     // --------------------------------------------------------------
     // --------------------------------------------------------------
@@ -63,19 +80,46 @@ public class MainActivity extends AppCompatActivity {
 
     // --------------------------------------------------------------
     // --------------------------------------------------------------
-    private Button enviarDatos;
-    private Button enviarDatosFake;
 
+    private ImageView perfil;
+    private ImageView information;
 
     // --------------------------------------------------------------
     // --------------------------------------------------------------
     private LocationManager locManager;
 
+    //Boton y Texto qr
+    private ImageView buttonScan;
+    private String UUIDScan;
+
+    final Handler handler= new Handler();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_mainactivity);
+
+        //Guardo los datos permanentes
+        myPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+        myEditor = myPreferences.edit();
+        sesion = myPreferences.getBoolean("sesion", false);
+
+        /*
+        Log.d("datos", ": " + myPreferences.getString("correo", "unknown"));
+        Log.d("datos", ": " + myPreferences.getString("contrasenya", "unknown"));
+        Log.d("datos", ": " + myPreferences.getInt("telefono", 0));
+        Log.d("datos", ": " + myPreferences.getString("nombre", "unknown"));
+        Log.d("datos", ": " + myPreferences.getString("apellidos", "unknown"));
+        Log.d("datos", ": " + myPreferences.getString("estado", "unknown"));
+        */
+
+        //Compruebo si la sesion este iniciada
+        if(sesion == false){
+            Intent intent = new Intent(MainActivity.this, Login.class);
+            startActivity(intent);
+        }
+
         //Librería encargada ser cocentarse con el Servidor
         AndroidNetworking.initialize(getApplicationContext());
 
@@ -94,20 +138,42 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),"GPS Activado",Toast.LENGTH_SHORT).show();
         }
 
-        //Botón que envía los datos al Servidor
-        enviarDatos = findViewById(R.id.enviarDatos);
-        enviarDatos.setOnClickListener(new View.OnClickListener() {
+
+        perfil = findViewById(R.id.perfilImage);
+        perfil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                botonEnviarAlServidor(view);
+                Intent intent = new Intent(MainActivity.this, EditarPerfil.class);
+                startActivity(intent);
             }
         });
 
-        enviarDatosFake = findViewById(R.id.button_fake);
-        enviarDatosFake.setOnClickListener(new View.OnClickListener() {
+        information = findViewById(R.id.imageInformation);
+        information.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                botonEnviarAlServidorFake(view);
+                Intent intent = new Intent(MainActivity.this, InformacionAdicional.class);
+                startActivity(intent);
+            }
+        });
+
+        //Scan
+        //Botón para el escaneao del qr
+        buttonScan = findViewById(R.id.imageView8);
+        buttonScan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                botonLeerCodigoQR(view);
+            }
+        });
+
+        devices = findViewById(R.id.profileImage);
+        devices.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, Devices.class);
+                intent.putExtra("medicion", ultimaMedida);
+                startActivity(intent);
             }
         });
 
@@ -119,44 +185,6 @@ public class MainActivity extends AppCompatActivity {
 
     } // onCreate()
 
-
-    // --------------------------------------------------------------
-    // --------------------------------------------------------------
-    @SuppressLint("MissingPermission")
-    private void buscarTodosLosDispositivosBTLE() {
-        Log.d(ETIQUETA_LOG, " buscarTodosLosDispositivosBTL(): empieza ");
-
-        Log.d(ETIQUETA_LOG, " buscarTodosLosDispositivosBTL(): instalamos scan callback ");
-
-        this.callbackDelEscaneo = new ScanCallback() {
-            @Override
-            public void onScanResult( int callbackType, ScanResult resultado ) {
-                super.onScanResult(callbackType, resultado);
-                Log.d(ETIQUETA_LOG, " buscarTodosLosDispositivosBTL(): onScanResult() ");
-
-                mostrarInformacionDispositivoBTLE( resultado );
-            }
-
-            @Override
-            public void onBatchScanResults(List<ScanResult> results) {
-                super.onBatchScanResults(results);
-                Log.d(ETIQUETA_LOG, " buscarTodosLosDispositivosBTL(): onBatchScanResults() ");
-
-            }
-
-            @Override
-            public void onScanFailed(int errorCode) {
-                super.onScanFailed(errorCode);
-                Log.d(ETIQUETA_LOG, " buscarTodosLosDispositivosBTL(): onScanFailed() ");
-
-            }
-        };
-
-        Log.d(ETIQUETA_LOG, " buscarTodosLosDispositivosBTL(): empezamos a escanear ");
-
-        this.elEscanner.startScan( this.callbackDelEscaneo);
-
-    } // ()
 
     // --------------------------------------------------------------
     // --------------------------------------------------------------
@@ -216,7 +244,7 @@ public class MainActivity extends AppCompatActivity {
     // --------------------------------------------------------------
     // --------------------------------------------------------------
     @SuppressLint("MissingPermission")
-    private void buscarEsteDispositivoBTLE(final String dispositivoBuscado ) {
+    private void buscarEsteDispositivoBTLE(final UUID dispositivoBuscado ) {
         Log.d(ETIQUETA_LOG, " buscarEsteDispositivoBTLE(): empieza ");
 
         Log.d(ETIQUETA_LOG, "  buscarEsteDispositivoBTLE(): instalamos scan callback ");
@@ -248,7 +276,7 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        ScanFilter sf = new ScanFilter.Builder().setDeviceName( dispositivoBuscado ).build();
+        ScanFilter sf = new ScanFilter.Builder().setDeviceName( dispositivoBuscado.toString() ).build();
 
         Log.d(ETIQUETA_LOG, "  buscarEsteDispositivoBTLE(): empezamos a escanear buscando: " + dispositivoBuscado );
         //Log.d(ETIQUETA_LOG, "  buscarEsteDispositivoBTLE(): empezamos a escanear buscando: " + dispositivoBuscado
@@ -260,7 +288,7 @@ public class MainActivity extends AppCompatActivity {
     // --------------------------------------------------------------
     // --------------------------------------------------------------
     @SuppressLint("MissingPermission")
-    private void detenerBusquedaDispositivosBTLE() {
+    private void detenerBusquedaDispositivosBTLE(){
 
         if ( this.callbackDelEscaneo == null ) {
             return;
@@ -269,31 +297,7 @@ public class MainActivity extends AppCompatActivity {
         this.elEscanner.stopScan( this.callbackDelEscaneo );
         this.callbackDelEscaneo = null;
 
-    } // ()
 
-    // --------------------------------------------------------------
-    // --------------------------------------------------------------
-    public void botonBuscarDispositivosBTLEPulsado( View v ) {
-        Log.d(ETIQUETA_LOG, " boton buscar dispositivos BTLE Pulsado" );
-        this.buscarTodosLosDispositivosBTLE();
-    } // ()
-
-    // --------------------------------------------------------------
-    // --------------------------------------------------------------
-    public void botonBuscarNuestroDispositivoBTLEPulsado( View v ) {
-        Log.d(ETIQUETA_LOG, " boton nuestro dispositivo BTLE Pulsado" );
-        //this.buscarEsteDispositivoBTLE( Utilidades.stringToUUID( "EPSG-GTI-PROY-3A" ) );
-
-        //this.buscarEsteDispositivoBTLE( "EPSG-GTI-PROY-3A" );
-        this.buscarEsteDispositivoBTLE( "GTI-JDEC" );
-
-    } // ()
-
-    // --------------------------------------------------------------
-    // --------------------------------------------------------------
-    public void botonDetenerBusquedaDispositivosBTLEPulsado( View v ) {
-        Log.d(ETIQUETA_LOG, " boton detener busqueda dispositivos BTLE Pulsado" );
-        this.detenerBusquedaDispositivosBTLE();
     } // ()
 
     // --------------------------------------------------------------
@@ -415,9 +419,10 @@ public class MainActivity extends AppCompatActivity {
     //-------------------------------------------------------------------------
     //Enviar Datos al Servidor
 
-    public void botonEnviarAlServidor(View view) {
+    public void botonEnviarAlServidor() {
         //Medida medida = guardarMedida("Test",major_datos, minor_datos);
         Medida medida = guardarMedida(major_datos, minor_datos);
+        ultimaMedida = (int) medida.getValor();
 
         //Envíar datos POST
         JSONObject jsonObject = new JSONObject();
@@ -454,46 +459,47 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(),"Datos Enviados",Toast.LENGTH_SHORT).show();
     }
 
-    public void botonEnviarAlServidorFake(View view) {
-        //Medida medida = guardarMedida("Test",major_datos, minor_datos);
-        Medida medida = guardarMedida(2, 2);
 
-        //Log.d("medida", "medida: " + medida.getValor() + " " + medida.getTiempo() + " " + medida.getNombre_sensor() + " " + medida.getCoordenada().getX() + " " + medida.getCoordenada().getY());
-
-        //Envíar datos POST
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put("id", null);
-            jsonObject.put("valor", medida.getValor());
-            jsonObject.put("fecha", medida.getTiempo());
-            jsonObject.put("nombreSensor", medida.getNombre_sensor());
-            jsonObject.put("longitud", medida.getCoordenada().getX());
-            jsonObject.put("latitud", medida.getCoordenada().getY());
-
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        AndroidNetworking.post("http://" + ip + ":8080/insertarMedicion")//Recordar cambiar ip cada vez que cambies de red
-                .addJSONObjectBody(jsonObject) // posting json
-                .setTag("test")
-                .setPriority(Priority.MEDIUM)
-                .build()
-                .getAsJSONArray(new JSONArrayRequestListener() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        // do anything with response
-                    }
-
-                    @Override
-                    public void onError(ANError error) {
-                        // handle error
-                    }
-                });
-
-        Toast.makeText(getApplicationContext(),"Datos Enviados",Toast.LENGTH_SHORT).show();
+    public void botonLeerCodigoQR(View view){
+        IntentIntegrator integrador = new IntentIntegrator(MainActivity.this);
+        integrador.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
+        integrador.setPrompt("lECTOR - cdp");
+        integrador.setBeepEnabled(true);
+        integrador.setBarcodeImageEnabled(true);
+        integrador.initiateScan();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        IntentResult resultado = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+
+        if(resultado != null){
+            if(resultado.getContents() == null){
+                Toast.makeText(this, "Lectura cancelada", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, resultado.getContents(), Toast.LENGTH_LONG).show();
+                buscarEsteDispositivoBTLE( Utilidades.stringToUUID( resultado.getContents() ) );
+
+                UUIDScan = resultado.getContents();
+                ejecutarDelay();
+            }
+        } else {
+
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+
+    private void ejecutarDelay(){
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                botonEnviarAlServidor();;//llamamos nuestro metodo
+                handler.postDelayed(this,10000);//se ejecutara cada 10 segundos
+            }
+        },10000);//empezara a ejecutarse después de 5 milisegundos
+
+    }
 
 }
