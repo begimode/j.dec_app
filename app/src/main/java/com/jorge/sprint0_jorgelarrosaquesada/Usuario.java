@@ -2,7 +2,15 @@ package com.jorge.sprint0_jorgelarrosaquesada;
 
 import java.io.Serializable;
 
+//----------------------------------------------------
+// Archivo: Usuario.java
+// J.Dec
+// Descripción: Esta clase crea un objeto Usuario para guardar los datos al loguear y para registrar al usuario
+//----------------------------------------------------
+
 public class Usuario implements Serializable {
+
+    //Atributos
     private String correo;
     private String contrasenya;
     private int telefono;
@@ -10,9 +18,11 @@ public class Usuario implements Serializable {
     private String apellidos;
     private String estado;
 
+    //Constructor que crea un objeto coordenada pero vacío
     public Usuario() {
     }
 
+    //Constructor que crea un objeto coordenada pasando los datos
     public Usuario(String correo, String contrasenya, int telefono, String nombre, String apellidos, String estado) {
         this.correo = correo;
         this.contrasenya = contrasenya;
@@ -22,6 +32,7 @@ public class Usuario implements Serializable {
         this.estado = estado;
     }
 
+    //Getters Setters
     public String getCorreo() {
         return correo;
     }
@@ -70,6 +81,7 @@ public class Usuario implements Serializable {
         this.estado = estado;
     }
 
+    //ToString
     @Override
     public String toString() {
         return "Usuario{" +

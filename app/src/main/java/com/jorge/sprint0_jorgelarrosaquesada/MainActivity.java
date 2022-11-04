@@ -46,22 +46,34 @@ import com.google.zxing.integration.android.IntentResult;
 
 //----------------------------------------------------
 // Archivo: MainActivity.java
-// Jorge Larrosa Quesada
-// Sprint 0
+// J.Dec
 //----------------------------------------------------
 
 public class MainActivity extends AppCompatActivity {
 
+    //Se declran las variables
     String ip = "192.168.0.14";
+    Boolean sesion;
+    ImageView devices;
     private int ultimaMedida;
+    private float major_datos;
+    private int minor_datos;
+    private ImageView perfil;
+    private ImageView information;
+    private LocationManager locManager;
+
+    //Boton y Texto qr
+    private ImageView buttonScan;
+    private String UUIDScan;
+
+    //Handler
+    final Handler handler= new Handler();
 
     // --------------------------------------------------------------
     // --------------------------------------------------------------
     //Sirve para guardar datos permanentes
     SharedPreferences myPreferences;
     SharedPreferences.Editor myEditor;
-    Boolean sesion;
-    ImageView devices;
 
     // --------------------------------------------------------------
     // --------------------------------------------------------------
@@ -73,36 +85,17 @@ public class MainActivity extends AppCompatActivity {
     private BluetoothLeScanner elEscanner;
     private ScanCallback callbackDelEscaneo = null;
 
-    // --------------------------------------------------------------
-    // --------------------------------------------------------------
-    private float major_datos;
-    private int minor_datos;
-
-    // --------------------------------------------------------------
-    // --------------------------------------------------------------
-
-    private ImageView perfil;
-    private ImageView information;
-
-    // --------------------------------------------------------------
-    // --------------------------------------------------------------
-    private LocationManager locManager;
-
-    //Boton y Texto qr
-    private ImageView buttonScan;
-    private String UUIDScan;
-
-    final Handler handler= new Handler();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mainactivity);
 
-        //Guardo los datos permanentes
+        //Sirve para guardar valores de en la memoria interna del la app
         myPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
         myEditor = myPreferences.edit();
+
+        //Obtengo de la memoria interna el valor de la sesion
         sesion = myPreferences.getBoolean("sesion", false);
 
         /*
@@ -114,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d("datos", ": " + myPreferences.getString("estado", "unknown"));
         */
 
-        //Compruebo si la sesion este iniciada
+        //Compruebo si la sesion este iniciada, si es falso te envía al login
         if(sesion == false){
             Intent intent = new Intent(MainActivity.this, Login.class);
             startActivity(intent);
@@ -134,12 +127,17 @@ public class MainActivity extends AppCompatActivity {
 
             return;
         }else {
-
+            //Te muestra un texto que está el gps activado
             Toast.makeText(getApplicationContext(),"GPS Activado",Toast.LENGTH_SHORT).show();
         }
 
-
+        //Relaciono las variables con los id del layout
         perfil = findViewById(R.id.perfilImage);
+        information = findViewById(R.id.imageInformation);
+        buttonScan = findViewById(R.id.imageView8);
+        devices = findViewById(R.id.profileImage);
+
+        //Botón que te lleva a la pestaña de EditPerfil.
         perfil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -148,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        information = findViewById(R.id.imageInformation);
+        //Botón que te lleva a la pestaña de InformacionAdicional.
         information.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -158,8 +156,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //Scan
-        //Botón para el escaneao del qr
-        buttonScan = findViewById(R.id.imageView8);
+        //Botón para el escaneao del qr, Botón para llamar a la función botonLeerCodigoQR()
         buttonScan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -167,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        devices = findViewById(R.id.profileImage);
+        //Botón que te lleva a la pestaña de Devices.
         devices.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -179,6 +176,7 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d(ETIQUETA_LOG, " onCreate(): empieza ");
 
+        //Llama a la función inicializarBlueTooth()
         inicializarBlueTooth();
 
         Log.d(ETIQUETA_LOG, " onCreate(): termina ");
@@ -186,8 +184,14 @@ public class MainActivity extends AppCompatActivity {
     } // onCreate()
 
 
-    // --------------------------------------------------------------
-    // --------------------------------------------------------------
+    // .................................................................
+    //  resultado: ScanResult
+    //  -->
+    // mostrarInformacionDispositivoBTLE()
+    //
+    // Esta función busca todos los dispositivo
+    // .................................................................
+
     @SuppressLint("MissingPermission")
     private void mostrarInformacionDispositivoBTLE(ScanResult resultado ) {
 
@@ -241,8 +245,14 @@ public class MainActivity extends AppCompatActivity {
 
     } // ()
 
-    // --------------------------------------------------------------
-    // --------------------------------------------------------------
+    // .................................................................
+    //  dispositivoBuscado: UUID
+    //  -->
+    // buscarEsteDispositivoBTLE()
+    //
+    // Esta función busca el dispositivo que le hemos pasado por valores
+    // .................................................................
+
     @SuppressLint("MissingPermission")
     private void buscarEsteDispositivoBTLE(final UUID dispositivoBuscado ) {
         Log.d(ETIQUETA_LOG, " buscarEsteDispositivoBTLE(): empieza ");
@@ -285,8 +295,13 @@ public class MainActivity extends AppCompatActivity {
         this.elEscanner.startScan( this.callbackDelEscaneo );
     } // ()
 
-    // --------------------------------------------------------------
-    // --------------------------------------------------------------
+    // .................................................................
+    //
+    // detenerBusquedaDispositivosBTLE()
+    //
+    // Esta función detiene la busqueda de Beacons
+    // .................................................................
+
     @SuppressLint("MissingPermission")
     private void detenerBusquedaDispositivosBTLE(){
 
@@ -300,8 +315,12 @@ public class MainActivity extends AppCompatActivity {
 
     } // ()
 
-    // --------------------------------------------------------------
-    // --------------------------------------------------------------
+    // .................................................................
+    //
+    // inicializarBlueTooth()
+    //
+    // .................................................................
+
     @SuppressLint("MissingPermission")
     private void inicializarBlueTooth() {
         Log.d(ETIQUETA_LOG, " inicializarBlueTooth(): obtenemos adaptador BT ");
@@ -344,13 +363,13 @@ public class MainActivity extends AppCompatActivity {
         }
     } // ()
 
+    // .................................................................
+    // requestCode: R, permissions: <Texto>, grantResults: <R>
+    // -->
+    // onRequestPermissionsResult()
+    //
+    // .................................................................
 
-    // --------------------------------------------------------------
-    // --------------------------------------------------------------
-
-
-    // --------------------------------------------------------------
-    // --------------------------------------------------------------
     public void onRequestPermissionsResult(int requestCode, String[] permissions,
                                            int[] grantResults) {
         super.onRequestPermissionsResult( requestCode, permissions, grantResults);
@@ -375,9 +394,18 @@ public class MainActivity extends AppCompatActivity {
         // permissions this app might request.
     } // ()
 
-    //-------------------------------------------------------------------------
-    //-------------------------------------------------------------------------
-    //Guardamos la Medida
+
+    // .................................................................
+    // valor: Z, sensor: R
+    // -->
+    // guardarMedida() <--
+    // <--
+    // Medida:
+    // {valor: Z, tiempo: Texto, nombre_sensor: Texto, coordenada: Coordenada}
+    //
+    // Esta función crea un objeto medida mediante un constructor al cual se le pasan los valores mencionados arriba y lo devuelve.
+    // .................................................................
+
     public Medida guardarMedida(float valor, int sensor){
         Medida medida = new Medida();
 
@@ -415,9 +443,13 @@ public class MainActivity extends AppCompatActivity {
         return medida;
     }
 
-    //-------------------------------------------------------------------------
-    //-------------------------------------------------------------------------
-    //Enviar Datos al Servidor
+    // .................................................................
+    // view: View
+    // -->
+    // botonEnviarAlServidor()
+    //
+    // Esta función crea una medida con los valores que obtiene por los imputs, después hace un post al servidor node insertando los datos en l bd
+    // .................................................................
 
     public void botonEnviarAlServidor() {
         //Medida medida = guardarMedida("Test",major_datos, minor_datos);
@@ -459,6 +491,13 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(),"Datos Enviados",Toast.LENGTH_SHORT).show();
     }
 
+    // .................................................................
+    // view: View
+    // -->
+    // botonLeerCodigoQR()
+    //
+    // Esta función lee el qr
+    // .................................................................
 
     public void botonLeerCodigoQR(View view){
         IntentIntegrator integrador = new IntentIntegrator(MainActivity.this);
@@ -468,6 +507,14 @@ public class MainActivity extends AppCompatActivity {
         integrador.setBarcodeImageEnabled(true);
         integrador.initiateScan();
     }
+
+    // .................................................................
+    // requestCode: int, resultCode: int , data: Intent
+    // -->
+    // onActivityResult()
+    //
+    // Esta función comprueba si se ha escaneado bien el qr, si es correcto guarda el valor y llama a ejecutarDelay()
+    // .................................................................
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -489,6 +536,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // .................................................................
+    //
+    // ejecutarDelay()
+    //
+    // Esta función llama a botonEnviarAlServidor() tras 10 segundos
+    // .................................................................
 
     private void ejecutarDelay(){
 

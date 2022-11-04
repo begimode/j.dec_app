@@ -7,8 +7,7 @@ import java.util.UUID;
 
 //----------------------------------------------------
 // Archivo: Utilidades.java
-// Jorge Larrosa Quesada
-// Sprint 0
+// J.Dec
 //----------------------------------------------------
 
 public class Utilidades {

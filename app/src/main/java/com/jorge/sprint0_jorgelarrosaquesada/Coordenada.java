@@ -2,8 +2,8 @@ package com.jorge.sprint0_jorgelarrosaquesada;
 
 //----------------------------------------------------
 // Archivo: Coordenada.java
-// Jorge Larrosa Quesada
-// Sprint 0
+// J.Dec
+// Descripción: Esta clase sirve para crear objetos de tipo Coordenada que se utilizan en la clase Medida. Guardan las coordenadas que se obtienen en la APP
 //----------------------------------------------------
 
 public class Coordenada {
@@ -12,12 +12,13 @@ public class Coordenada {
     private float x;
     private float y;
 
-    //Constructor
+    //Constructor que crea un objeto coordenada pasando los datos
     public Coordenada(float x, float y) {
         this.x = x;
         this.y = y;
     }
 
+    //Constructor que crea un objeto coordenada pero vacío
     public Coordenada() {
     }
 

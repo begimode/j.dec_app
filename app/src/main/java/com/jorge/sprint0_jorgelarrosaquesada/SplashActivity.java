@@ -10,6 +10,11 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+//----------------------------------------------------
+// Archivo: SplashActivity.java
+// J.Dec
+//----------------------------------------------------
+
 public class SplashActivity extends AppCompatActivity {
 
     @Override
@@ -17,16 +22,19 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
-        // agrego animaciones
+        //Se agregan las animaciones
         Animation animacion1 = AnimationUtils.loadAnimation(this,R.anim.desplazamiento_arriba);
         Animation animacion2 = AnimationUtils.loadAnimation(this,R.anim.desplazamiento_abajo);
 
+        //Relaciono las variables con los id del layout
         TextView text1 = this.findViewById(R.id.textoEntrada);
         ImageView image1 = this.findViewById(R.id.imageView3);
 
+        //Inicio las animaciones
         image1.setAnimation(animacion1);
         text1.setAnimation(animacion2);
 
+        //Sirve para pasar a la pestaña InitTutorial al pasar 4 segundos
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

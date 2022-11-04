@@ -19,8 +19,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+//----------------------------------------------------
+// Archivo: Registrar.java
+// J.Dec
+//----------------------------------------------------
+
 public class Registrar extends AppCompatActivity {
 
+    //Se declran las variables
     String ip = "192.168.0.14";
     EditText correo;
     EditText contrasenya;
@@ -35,6 +41,7 @@ public class Registrar extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registrar);
 
+        //Relaciono las variables con los id del layout
         correo = findViewById(R.id.editTextEmail);
         contrasenya = findViewById(R.id.editTextPassword);
         nombre = findViewById(R.id.editTextCorreo);
@@ -42,11 +49,12 @@ public class Registrar extends AppCompatActivity {
         telefono = findViewById(R.id.telefono);
         registrar = findViewById(R.id.buttonRegistrar);
         loginText = findViewById(R.id.textView6);
+        TextView leer = findViewById(R.id.leer);
 
-        //Librería encargada ser cocentarse con el Servidor
+        //Librería encargada de conectarte con el Servidor
         AndroidNetworking.initialize(getApplicationContext());
 
-        TextView leer = findViewById(R.id.leer);
+        //Botón para llamar a la función pulsarTerminos()
         leer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -54,6 +62,7 @@ public class Registrar extends AppCompatActivity {
             }
         });
 
+        //Botón para llamar a la función insertarUsuario()
         registrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -61,6 +70,7 @@ public class Registrar extends AppCompatActivity {
             }
         });
 
+        //Botón para llamar a la función pulsarVolverLogin()
         loginText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,15 +79,42 @@ public class Registrar extends AppCompatActivity {
         });
     }
 
+    // .................................................................
+    // view: View
+    // -->
+    // pulsarTerminos() <--
+    //
+    // Esta función te lleva a la pestaña de Politica y Privacidad.
+    // .................................................................
+
     private void pulsarTerminos(View view){
         Intent intent = new Intent(this, Politica_Privacidad.class);
         startActivity(intent);
     }
 
+    // .................................................................
+    // view: View
+    // -->
+    // pulsarVolverLogin() <--
+    //
+    // Esta función te lleva a la pestaña de Login.
+    // .................................................................
+
     private void pulsarVolverLogin(View view){
         Intent intent = new Intent(this, Login.class);
         startActivity(intent);
     }
+
+    // .................................................................
+    // correo: Texto, contrasenya: Texto, telefono: R, nombre: Texto, apellidos: Texto
+    // -->
+    // guardarUsuario() <--
+    // <--
+    // Usuario:
+    // {correo: Texto, contrasenya: Texto, telefono: int, nombre: Texto, apellidos: Texto, estado: String}
+    //
+    // Esta función crea un objeto usuario mediante un constructor al cual se le pasan los valores mencionados arriba y lo devuelve.
+    // .................................................................
 
     private Usuario guardarUsuario(String correo, String contrasenya, int telefono, String nombre, String apellidos){
         Usuario usuario = new Usuario();
@@ -92,6 +129,13 @@ public class Registrar extends AppCompatActivity {
         return usuario;
     }
 
+    // .................................................................
+    // view: View
+    // -->
+    // insertarUsuario() <--
+    //
+    // Esta función crea un usuario con los valores que obtiene por los imputs, después hace un post al servidor node y por último te devuelve a la pestaña de login
+    // .................................................................
 
     private void insertarUsuario(View view){
         Usuario usuario = guardarUsuario(correo.getText().toString(),contrasenya.getText().toString(),Integer.parseInt(telefono.getText().toString()),nombre.getText().toString(),apellidos.getText().toString());

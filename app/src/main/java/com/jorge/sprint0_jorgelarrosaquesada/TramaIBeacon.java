@@ -5,10 +5,8 @@ import java.util.Arrays;
 
 //----------------------------------------------------
 // Archivo: TramaIBeacon.java
-// Jorge Larrosa Quesada
-// Sprint 0
-//----------------------------------------------------
-
+// J.Dec
+//-----------------------------------------------------
 
 public class TramaIBeacon {
     private byte[] prefijo = null; // 9 bytes

@@ -4,8 +4,8 @@ import android.util.Log;
 
 //----------------------------------------------------
 // Archivo: Medida.java
-// Jorge Larrosa Quesada
-// Sprint 0
+// J.Dec
+// Descripción: Esta clase crea un objeto Medida la cual sirve para enviarlo al servidor
 //----------------------------------------------------
 
 public class Medida {
@@ -16,7 +16,7 @@ public class Medida {
     private String nombre_sensor;
     private Coordenada coordenada;
 
-    //Constructor
+    //Constructor que crea un objeto coordenada pasando los datos
     public Medida(float valor, String tiempo, String nombre_sensor, Coordenada coordenada) {
         this.valor = valor;
         this.tiempo = tiempo;
@@ -24,6 +24,7 @@ public class Medida {
         this.coordenada = coordenada;
     }
 
+    //Constructor que crea un objeto coordenada pero vacío
     public Medida() {
     }
 

@@ -25,26 +25,35 @@ import org.json.JSONObject;
 
 import java.util.List;
 
+//----------------------------------------------------
+// Archivo: Login.java
+// J.Dec
+//----------------------------------------------------
+
 public class Login extends AppCompatActivity {
 
+    //Se declaran las variables
     String ip = "192.168.0.14";
 
     //Sirve para guardar datos permanentes
     SharedPreferences myPreferences;
     SharedPreferences.Editor myEditor;
     boolean sesion;
-
     EditText correo;
     EditText contrasenya;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        //Guardo los datos permanentes
+        //Sirve para guardar valores de en la memoria interna del la app
         myPreferences = PreferenceManager.getDefaultSharedPreferences(Login.this);
         myEditor = myPreferences.edit();
+
+        //Obtengo de la memoria interna el valor de la sesion
         sesion = myPreferences.getBoolean("sesion", false);
+
         /*
         Log.d("datos", ": login " + myPreferences.getString("correo", "unknown"));
         Log.d("datos", ": login " + myPreferences.getString("contrasenya", "unknown"));
@@ -55,25 +64,30 @@ public class Login extends AppCompatActivity {
         Log.d("datos", "Estado de la sesion: " + sesion);
         */
 
-        //Compruebo si la sesion este iniciada
+        //Compruebo si la sesion este iniciada y si es así pasa al MainActivity
         if(sesion){
             Intent intent = new Intent(Login.this, MainActivity.class);
             startActivity(intent);
         }
 
+        //Librería encargada ser cocentarse con el Servidor
         AndroidNetworking.initialize(getApplicationContext());
 
+        //Relaciono las variables con los id del layout
         correo = findViewById(R.id.editTextCorreo);
         contrasenya = findViewById(R.id.editTextPass);
-
         Button login = findViewById(R.id.button_login);
+        TextView registrar = findViewById(R.id.textView4);
+
+        //Botón para llamar a la función pulsarLogin()
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 pulsarLogin(view);
             }
         });
-        TextView registrar = findViewById(R.id.textView4);
+
+        //Botón para llamar a la función pulsarRegistrar()
         registrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -81,6 +95,14 @@ public class Login extends AppCompatActivity {
             }
         });
     }
+
+    // .................................................................
+    // view: View
+    // -->
+    // pulsarLogin() <--
+    //
+    // Esta función hace un get al servidor pasandole el correo para comprobar que exista el usuario, si existe guarda los datos del usuario en la memoria interna, hace otro get para comprobar las contraseñas y si es correcto guarda una sesión y pasa a la pestaña de MainActivity
+    // .................................................................
 
     private void pulsarLogin(View view){
 
@@ -148,6 +170,14 @@ public class Login extends AppCompatActivity {
 
 
     }
+
+    // .................................................................
+    // view: View
+    // -->
+    // pulsarRegistrar() <--
+    //
+    // Esta función te lleva a la pestaña de Registrar.
+    // .................................................................
 
     private void pulsarRegistrar(View view){
         Intent intent = new Intent(this, Registrar.class);

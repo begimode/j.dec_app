@@ -23,8 +23,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+//----------------------------------------------------
+// Archivo: EditarPerfil.java
+// J.Dec
+//----------------------------------------------------
+
 public class EditarPerfil extends AppCompatActivity {
 
+    //Se declran las variables
     String ip = "192.168.0.14";
 
     ImageView atras;
@@ -35,24 +41,27 @@ public class EditarPerfil extends AppCompatActivity {
     EditText telefono;
     ImageView cerrarSesion;
     Button aplicarCambios;
+    Boolean sesion;
 
     SharedPreferences myPreferences;
     SharedPreferences.Editor myEditor;
-
-    Boolean sesion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perfil);
 
+        //Librería encargada ser cocentarse con el Servidor
         AndroidNetworking.initialize(getApplicationContext());
 
+        //Sirve para guardar valores de en la memoria interna del la app
         myPreferences = PreferenceManager.getDefaultSharedPreferences(EditarPerfil.this);
         myEditor = myPreferences.edit();
 
+        //Obtengo de la memoria interna el valor de la sesion
         sesion = myPreferences.getBoolean("sesion", false);
 
+        //Compruebo si la sesión tiene como valor false, y si es así te lleva a la pestaña de Login
         if(sesion == false){
             Intent intent = new Intent(EditarPerfil.this, Login.class);
             startActivity(intent);
@@ -68,7 +77,17 @@ public class EditarPerfil extends AppCompatActivity {
         Log.d("datos", "Estado de la sesion: " + sesion);
         */
 
+        //Relaciono las variables con los id del layout
         cerrarSesion = findViewById(R.id.imageView6);
+        atras = findViewById(R.id.imageView5);
+        usuario = findViewById(R.id.textView4);
+        nombre = findViewById(R.id.editNombre);
+        apellidos = findViewById(R.id.editApellidos);
+        correo = findViewById(R.id.editCorreo);
+        telefono = findViewById(R.id.editTelefono);
+        aplicarCambios = findViewById(R.id.cambios);
+
+        //Botón para llamar a la función pulsarCerrarSesion()
         cerrarSesion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -76,7 +95,7 @@ public class EditarPerfil extends AppCompatActivity {
             }
         });
 
-        atras = findViewById(R.id.imageView5);
+        //Botón que te lleva a la pestaña MainActivity
         atras.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,31 +104,29 @@ public class EditarPerfil extends AppCompatActivity {
             }
         });
 
-        usuario = findViewById(R.id.textView4);
+        //Escribo en los respectivos EditText los valores que he guardado anteriormente en la memoria interna sobre los datos del usuario al loguear
         usuario.setText(myPreferences.getString("nombre", "unknown") + " " + myPreferences.getString("apellidos", "unknown"));
-
-        nombre = findViewById(R.id.editNombre);
         nombre.setText(myPreferences.getString("nombre", "unknown"));
-
-        apellidos = findViewById(R.id.editApellidos);
         apellidos.setText(myPreferences.getString("apellidos", "unknown"));
-
-        correo = findViewById(R.id.editCorreo);
         correo.setText(myPreferences.getString("correo", "unknown"));
-
-        telefono = findViewById(R.id.editTelefono);
         int numero = myPreferences.getInt("telefono", 0);
         telefono.setText(String.valueOf(numero));
 
-        aplicarCambios = findViewById(R.id.cambios);
+        //Botón para llamar a la función pulsarAplicarCambios()
         aplicarCambios.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                pulsarAplicarCambios(view);
-            }
+            public void onClick(View view) {pulsarAplicarCambios(view);}
         });
 
     }
+
+    // .................................................................
+    // view: View
+    // -->
+    // pulsarAplicarCambios() <--
+    //
+    // Esta función crea un objeto JSON con los datos que obtiene de los imputs y de la memoria interna de la sesión, después hace un post al servidor node para actualizar los datos del usuario y por último llama a la función cerrarSesion
+    // .................................................................
 
     private void pulsarAplicarCambios(View view){
         //Envíar datos POST
@@ -146,6 +163,14 @@ public class EditarPerfil extends AppCompatActivity {
 
     }
 
+    // .................................................................
+    // view: View
+    // -->
+    // pulsarCerrarSesion() <--
+    //
+    // Esta función modifica los datos del usuario que están en la memoria interna, vaciando los datos y poniendo el valor de sesion como false. Te devuelve al login
+    // .................................................................
+
     private void pulsarCerrarSesion(View view){
         //Al cerrar la sesión modifico el estado de la sesión
         myEditor.putBoolean("sesion", false);
@@ -162,6 +187,13 @@ public class EditarPerfil extends AppCompatActivity {
         Intent intent = new Intent(EditarPerfil.this, Login.class);
         startActivity(intent);
     }
+
+    // .................................................................
+    //
+    // pulsarCerrarSesion2() <--
+    //
+    // Esta función modifica los datos del usuario que están en la memoria interna, vaciando los datos y poniendo el valor de sesion como false. Te devuelve al login
+    // .................................................................
 
     private void pulsarCerrarSesion2(){
         //Al cerrar la sesión modifico el estado de la sesión
