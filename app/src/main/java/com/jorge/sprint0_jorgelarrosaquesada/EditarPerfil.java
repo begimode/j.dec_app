@@ -31,7 +31,7 @@ import org.json.JSONObject;
 public class EditarPerfil extends AppCompatActivity {
 
     //Se declran las variables
-    String ip = "192.168.0.14";
+    String ip = "192.168.43.164";
 
     ImageView atras;
     TextView usuario;

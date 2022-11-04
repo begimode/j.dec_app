@@ -27,7 +27,7 @@ import org.json.JSONObject;
 public class Registrar extends AppCompatActivity {
 
     //Se declran las variables
-    String ip = "192.168.0.14";
+    String ip = "192.168.43.164";
     EditText correo;
     EditText contrasenya;
     EditText nombre;

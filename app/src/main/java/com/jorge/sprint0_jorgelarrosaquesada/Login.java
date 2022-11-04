@@ -33,7 +33,7 @@ import java.util.List;
 public class Login extends AppCompatActivity {
 
     //Se declaran las variables
-    String ip = "192.168.0.14";
+    String ip = "192.168.43.164";
 
     //Sirve para guardar datos permanentes
     SharedPreferences myPreferences;
