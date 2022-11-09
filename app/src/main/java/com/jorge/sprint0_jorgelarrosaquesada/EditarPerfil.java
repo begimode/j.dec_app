@@ -31,7 +31,7 @@ import org.json.JSONObject;
 public class EditarPerfil extends AppCompatActivity {
 
     //Se declran las variables
-    String ip = "192.168.43.164";
+    String ip = "192.168.0.14";
 
     ImageView atras;
     TextView usuario;
@@ -39,6 +39,7 @@ public class EditarPerfil extends AppCompatActivity {
     EditText apellidos;
     EditText correo;
     EditText telefono;
+    EditText contrasenya;
     ImageView cerrarSesion;
     Button aplicarCambios;
     Boolean sesion;
@@ -67,6 +68,7 @@ public class EditarPerfil extends AppCompatActivity {
             startActivity(intent);
         }
 
+        Log.d("pepe", ": edit " + myPreferences.getInt("ID_user", 0));
          /*
         Log.d("datos", ": login " + myPreferences.getString("correo", "unknown"));
         Log.d("datos", ": login " + myPreferences.getString("contrasenya", "unknown"));
@@ -86,6 +88,7 @@ public class EditarPerfil extends AppCompatActivity {
         correo = findViewById(R.id.editCorreo);
         telefono = findViewById(R.id.editTelefono);
         aplicarCambios = findViewById(R.id.cambios);
+        contrasenya = findViewById(R.id.editContrasenya);
 
         //Botón para llamar a la función pulsarCerrarSesion()
         cerrarSesion.setOnClickListener(new View.OnClickListener() {
@@ -132,11 +135,13 @@ public class EditarPerfil extends AppCompatActivity {
         //Envíar datos POST
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("correoActual", myPreferences.getString("correo", "unknown"));
+            jsonObject.put("ID_user", myPreferences.getInt("ID_user", 0));
             jsonObject.put("correo", correo.getText().toString());
             jsonObject.put("telefono", Integer.parseInt(telefono.getText().toString()));
             jsonObject.put("nombre", nombre.getText().toString());
             jsonObject.put("apellidos", apellidos.getText().toString());
+            jsonObject.put("contrasenya", contrasenya.getText().toString());
+
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -180,6 +185,7 @@ public class EditarPerfil extends AppCompatActivity {
         myEditor.putString("nombre", null);
         myEditor.putString("apellidos", null);
         myEditor.putString("estado", null);
+        myEditor.putInt("id_user", 0);
         myEditor.commit();
         sesion = myPreferences.getBoolean("sesion", false);
         //Log.d("test", "onCreate: " + sesion);
@@ -204,6 +210,7 @@ public class EditarPerfil extends AppCompatActivity {
         myEditor.putString("nombre", null);
         myEditor.putString("apellidos", null);
         myEditor.putString("estado", null);
+        myEditor.putInt("id_user", 0);
         myEditor.commit();
         sesion = myPreferences.getBoolean("sesion", false);
         //Log.d("test", "onCreate: " + sesion);

@@ -33,7 +33,7 @@ import java.util.List;
 public class Login extends AppCompatActivity {
 
     //Se declaran las variables
-    String ip = "192.168.43.164";
+    String ip = "192.168.0.14";
 
     //Sirve para guardar datos permanentes
     SharedPreferences myPreferences;
@@ -115,6 +115,8 @@ public class Login extends AppCompatActivity {
                     @Override
                     public void onResponse(Usuario user) {
 
+                        String id = Integer.toString(user.getID_user());
+                        int id_ = Integer.parseInt(id);
                         //Guardo los valores de la sesion
                         myEditor.putString("correo", user.getCorreo());
                         myEditor.putString("contrasenya", user.getContrasenya());
@@ -122,6 +124,8 @@ public class Login extends AppCompatActivity {
                         myEditor.putString("nombre", user.getNombre());
                         myEditor.putString("apellidos", user.getApellidos());
                         myEditor.putString("estado", user.getEstado());
+                        myEditor.putInt("ID_user",  id_);
+
 
                         Log.d("pepe", "correo : " + user.getCorreo());
                         Log.d("pepe", "contrasenya : " + user.getContrasenya());
@@ -129,6 +133,7 @@ public class Login extends AppCompatActivity {
                         Log.d("pepe", "nombre : " + user.getNombre());
                         Log.d("pepe", "apellidos : " + user.getApellidos());
                         Log.d("pepe", "estado : " + user.getEstado());
+                        Log.d("pepe", "ID_user : " +  myPreferences.getInt("ID_user", 0));
 
                         AndroidNetworking.get("http://" + ip + ":8080/desencriptar3?hash="+user.getContrasenya()+"&cont="+contrasenya.getText().toString())
                                 .addPathParameter("userId", "1")

@@ -11,6 +11,7 @@ import java.io.Serializable;
 public class Usuario implements Serializable {
 
     //Atributos
+    private int ID_user;
     private String correo;
     private String contrasenya;
     private int telefono;
@@ -23,7 +24,8 @@ public class Usuario implements Serializable {
     }
 
     //Constructor que crea un objeto coordenada pasando los datos
-    public Usuario(String correo, String contrasenya, int telefono, String nombre, String apellidos, String estado) {
+    public Usuario(int ID_user, String correo, String contrasenya, int telefono, String nombre, String apellidos, String estado) {
+        this.ID_user = ID_user;
         this.correo = correo;
         this.contrasenya = contrasenya;
         this.telefono = telefono;
@@ -33,6 +35,16 @@ public class Usuario implements Serializable {
     }
 
     //Getters Setters
+
+
+    public int getID_user() {
+        return ID_user;
+    }
+
+    public void setID_user(Integer ID_user) {
+        this.ID_user = ID_user;
+    }
+
     public String getCorreo() {
         return correo;
     }

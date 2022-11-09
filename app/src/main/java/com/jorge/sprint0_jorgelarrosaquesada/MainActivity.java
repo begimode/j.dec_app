@@ -52,7 +52,7 @@ import com.google.zxing.integration.android.IntentResult;
 public class MainActivity extends AppCompatActivity {
 
     //Se declran las variables
-    String ip = "192.168.43.164";
+    String ip = "192.168.0.14";
     Boolean sesion;
     ImageView devices;
     private int ultimaMedida;

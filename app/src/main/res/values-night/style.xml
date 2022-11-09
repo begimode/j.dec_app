@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="botonStyle" parent="@android:style/TextAppearance.Medium">
+        <item name="android:background">@color/button</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">18dp</item>
+        <item name="android:fontFamily">@font/yahei</item>
+        <item name="android:radius">@dimen/cardview_default_radius </item>
+    </style>
+
+
+    <style name="inputStyle">
+        <item name="android:fontFamily">@font/yahei</item>
+        <item name="android:textSize">15dp</item>
+        <item name="backgroundColor">@color/white</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
+
+    <style name="titleStyle">
+        <item name="android:fontFamily">@font/yahei</item>
+        <item name="android:textSize">30dp</item>
+        <item name="android:textColor">@color/title</item>
+    </style>
+
+
+    <style name="textStyle">
+        <item name="android:fontFamily">@font/yahei</item>
+        <item name="android:textSize">14dp</item>
+        <item name="android:textColor">@color/text_icons</item>
+    </style>
+
+</resources>

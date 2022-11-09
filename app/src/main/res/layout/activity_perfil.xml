@@ -6,25 +6,43 @@
     android:layout_height="match_parent">
 
     <EditText
+        android:id="@+id/editContrasenya"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="20dp"
+        android:ems="10"
+        android:hint="********"
+        android:inputType="textPassword"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView31"
+        tools:ignore="TouchTargetSizeCheck"></EditText>
+
+    <EditText
         android:id="@+id/editTelefono"
         android:layout_width="0dp"
-        android:layout_height="48dp"
+        android:layout_height="40dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="20dp"
         android:ems="10"
         android:hint="agni_rodriguez@gmail.com"
-        android:inputType="textPersonName"
+        android:inputType="number"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView23"></EditText>
+        app:layout_constraintTop_toBottomOf="@+id/textView23"
+        tools:ignore="TouchTargetSizeCheck"></EditText>
 
     <EditText
         android:id="@+id/editCorreo"
         android:layout_width="0dp"
-        android:layout_height="48dp"
+        android:layout_height="40dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="20dp"
@@ -34,7 +52,8 @@
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView20"></EditText>
+        app:layout_constraintTop_toBottomOf="@+id/textView20"
+        tools:ignore="TouchTargetSizeCheck"></EditText>
 
     <TextView
         android:id="@+id/textView20"
@@ -60,8 +79,8 @@
         android:id="@+id/cambios"
         android:layout_width="0dp"
         android:layout_height="55dp"
-        android:layout_marginTop="10dp"
 
+        android:layout_marginTop="10dp"
         android:bottomLeftRadius="70dp"
         android:bottomRightRadius="70dp"
         android:text="Aplicar Cambios"
@@ -70,7 +89,7 @@
         app:layout_constraintEnd_toEndOf="@+id/editCorreo"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/editCorreo"
-        app:layout_constraintTop_toBottomOf="@+id/editCorreo" />
+        app:layout_constraintTop_toBottomOf="@+id/editContrasenya" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -108,7 +127,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="RtlCompat" />
 
             <ImageView
                 android:id="@+id/imageView6"
@@ -136,9 +156,9 @@
     <EditText
         android:id="@+id/editNombre"
         android:layout_width="0dp"
-        android:layout_height="60dp"
+        android:layout_height="40dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="20dp"
         android:ems="10"
         android:hint="Agni"
@@ -147,12 +167,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView7"></EditText>
+        app:layout_constraintTop_toBottomOf="@+id/textView7"
+        tools:ignore="TouchTargetSizeCheck"></EditText>
 
     <EditText
         android:id="@+id/editApellidos"
         android:layout_width="0dp"
-        android:layout_height="48dp"
+        android:layout_height="40dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="20dp"
@@ -163,7 +184,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView19"></EditText>
+        app:layout_constraintTop_toBottomOf="@+id/textView19"
+        tools:ignore="TouchTargetSizeCheck"></EditText>
 
     <ImageView
         android:id="@+id/imageView2"
@@ -208,4 +230,15 @@
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/editNombre"
         app:layout_constraintStart_toStartOf="@+id/editNombre" />
+
+    <TextView
+        android:id="@+id/textView31"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Contraseña"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/editCorreo"
+        app:layout_constraintTop_toBottomOf="@+id/editCorreo" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
