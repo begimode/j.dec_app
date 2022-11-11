@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -30,7 +29,7 @@ public class Devices extends AppCompatActivity {
 
         //Relaciono las variables con los id del layout
         ultimaMedida = (TextView)findViewById(R.id.textView17);
-        atras = (ImageView)findViewById(R.id.imageView5);
+        atras = (ImageView)findViewById(R.id.atras);
 
         //Se añade el texto con los datos obtenidos antes
         ultimaMedida.setText("Última medida: " + valor);

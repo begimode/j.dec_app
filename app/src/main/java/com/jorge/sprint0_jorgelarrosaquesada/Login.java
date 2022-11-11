@@ -22,6 +22,7 @@ import com.androidnetworking.interfaces.ParsedRequestListener;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -33,7 +34,7 @@ import java.util.List;
 public class Login extends AppCompatActivity {
 
     //Se declaran las variables
-    String ip = "192.168.0.14";
+    String ip = "192.168.43.233";
 
     //Sirve para guardar datos permanentes
     SharedPreferences myPreferences;
@@ -41,6 +42,7 @@ public class Login extends AppCompatActivity {
     boolean sesion;
     EditText correo;
     EditText contrasenya;
+    TextView olvidar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +80,7 @@ public class Login extends AppCompatActivity {
         contrasenya = findViewById(R.id.editTextPass);
         Button login = findViewById(R.id.button_login);
         TextView registrar = findViewById(R.id.textView4);
+        olvidar= findViewById(R.id.olvidar);
 
         //Botón para llamar a la función pulsarLogin()
         login.setOnClickListener(new View.OnClickListener() {
@@ -92,6 +95,16 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 pulsarRegistrar(view);
+            }
+        });
+
+        // Para abrir la pestaña de he olvidado mi contraseña
+
+        olvidar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Login.this, RecuperarContrasenya.class);
+                startActivity(intent);
             }
         });
     }

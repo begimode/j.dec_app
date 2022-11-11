@@ -14,10 +14,10 @@
         app:srcCompat="@drawable/fondo" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/olvidar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="8dp"
         android:fontFamily="@font/yahei"
         android:text="¿Has olvidado tu contraseña?"
         app:layout_constraintEnd_toEndOf="@+id/editTextPass"
@@ -67,7 +67,7 @@
 
     <Button
         android:id="@+id/button_login"
-        style="@style/Widget.AppCompat.Button.Colored"
+        style="@style/botonStyle"
         android:layout_width="0dp"
         android:layout_height="55dp"
         android:layout_marginStart="30dp"
@@ -79,8 +79,8 @@
         android:text="LOGIN"
         android:topLeftRadius="70dp"
         android:topRightRadius="70dp"
-        app:layout_constraintBottom_toBottomOf="parent"
 
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"

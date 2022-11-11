@@ -22,7 +22,7 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/olvidar"
         android:layout_width="313dp"
         android:layout_height="55dp"
         android:fontFamily="@font/yahei"
@@ -38,18 +38,15 @@
 
     <Button
         android:id="@+id/button"
-        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        style="@style/botonStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="50dp"
-        android:background="#009688"
-        android:text="Empezemos"
-        android:textColor="#FFFFFF"
+        android:text="Empecemos"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/textView2"
-        app:layout_constraintStart_toStartOf="@+id/textView2"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"
-        app:rippleColor="#00FFFFFF" />
+        app:layout_constraintEnd_toEndOf="@+id/olvidar"
+        app:layout_constraintStart_toStartOf="@+id/olvidar"
+        app:layout_constraintTop_toBottomOf="@+id/olvidar" />
 
     <ImageView
         android:id="@+id/imageView"
