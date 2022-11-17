@@ -41,6 +41,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.androidnetworking.interfaces.ParsedRequestListener;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -52,7 +54,7 @@ import com.google.zxing.integration.android.IntentResult;
 public class MainActivity extends AppCompatActivity {
 
     //Se declran las variables
-    String ip = "192.168.0.14";
+    String ip = "192.168.1.98";
     Boolean sesion;
     ImageView devices;
     private int ultimaMedida;
@@ -98,14 +100,15 @@ public class MainActivity extends AppCompatActivity {
         //Obtengo de la memoria interna el valor de la sesion
         sesion = myPreferences.getBoolean("sesion", false);
 
-        /*
+
         Log.d("datos", ": " + myPreferences.getString("correo", "unknown"));
+        Log.d("datos", ": " + myPreferences.getInt("ID_user", 0));
         Log.d("datos", ": " + myPreferences.getString("contrasenya", "unknown"));
         Log.d("datos", ": " + myPreferences.getInt("telefono", 0));
         Log.d("datos", ": " + myPreferences.getString("nombre", "unknown"));
         Log.d("datos", ": " + myPreferences.getString("apellidos", "unknown"));
         Log.d("datos", ": " + myPreferences.getString("estado", "unknown"));
-        */
+
 
         //Compruebo si la sesion este iniciada, si es falso te envía al login
         if(sesion == false){
@@ -169,7 +172,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, Devices.class);
-                intent.putExtra("medicion", ultimaMedida);
+                intent.putExtra("ID_user", myPreferences.getInt("ID_user", 0));
+                intent.putExtra("ID_placa", myPreferences.getInt("ID_placa", 0));
                 startActivity(intent);
             }
         });
@@ -178,10 +182,41 @@ public class MainActivity extends AppCompatActivity {
 
         //Llama a la función inicializarBlueTooth()
         inicializarBlueTooth();
+        getDeviceInfo();
 
         Log.d(ETIQUETA_LOG, " onCreate(): termina ");
 
     } // onCreate()
+
+    private void getDeviceInfo() {
+        AndroidNetworking.get("http://" + ip + ":8080/buscarPlacaConId/" + myPreferences.getInt("ID_user", 0))
+                .setTag(this)
+                .setPriority(Priority.LOW)
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+
+                            String uuid = response.getString("uuid");
+
+                            int id = response.getInt("ID_placa");
+                            Log.d("ID DE LA PLACA", String.valueOf(id));
+
+                            myEditor.putInt("ID_placa", id);
+                            myEditor.putString("UUID_placa", uuid);
+                            myEditor.commit();
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+                    }
+                });
+    }
 
 
     // .................................................................
@@ -528,6 +563,7 @@ public class MainActivity extends AppCompatActivity {
                 buscarEsteDispositivoBTLE( Utilidades.stringToUUID( resultado.getContents() ) );
 
                 UUIDScan = resultado.getContents();
+                enviarUUIDAlServidor();
                 ejecutarDelay();
             }
         } else {
@@ -555,4 +591,45 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+    //Métodos get y post sensor
+    public void enviarUUIDAlServidor() {
+        Medida medida = guardarMedida(major_datos, minor_datos);
+        ultimaMedida = (int) medida.getValor();
+
+        //Envíar datos POST
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("ID_placa", null);
+            jsonObject.put("ID_user", myPreferences.getInt("ID_user", 0));
+            jsonObject.put("uuid", UUIDScan);
+            jsonObject.put("estadoPlaca", 1);
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        AndroidNetworking.post("http://" + ip + ":8080/insertarPlaca")//Recordar cambiar ip cada vez que cambies de red
+                .addJSONObjectBody(jsonObject) // posting json
+                .setTag("test")
+                .setPriority(Priority.MEDIUM)
+                .build()
+                .getAsJSONArray(new JSONArrayRequestListener() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+
+                    }
+
+                    @Override
+                    public void onError(ANError error) {
+                        // handle error
+                    }
+                });
+
+        Toast.makeText(getApplicationContext(),"Placa enviada",Toast.LENGTH_SHORT).show();
+    }
+
+
 }
+

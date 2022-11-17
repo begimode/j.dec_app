@@ -31,7 +31,7 @@ import org.json.JSONObject;
 public class EditarPerfil extends AppCompatActivity {
 
     //Se declran las variables
-    String ip = "192.168.0.14";
+    String ip = "192.168.1.98";
 
     ImageView atras;
     TextView usuario;
@@ -89,6 +89,7 @@ public class EditarPerfil extends AppCompatActivity {
         telefono = findViewById(R.id.editTelefono);
         aplicarCambios = findViewById(R.id.cambios);
         contrasenya = findViewById(R.id.editContrasenya);
+        contrasenya.setText(myPreferences.getString("contrasenya2", "unknown"));
 
         //Botón para llamar a la función pulsarCerrarSesion()
         cerrarSesion.setOnClickListener(new View.OnClickListener() {

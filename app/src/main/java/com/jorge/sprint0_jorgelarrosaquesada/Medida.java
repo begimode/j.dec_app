@@ -16,6 +16,10 @@ public class Medida {
     private String nombre_sensor;
     private Coordenada coordenada;
 
+
+    private int ID_medida, ID_placa;
+    private String tipo_medida;
+
     //Constructor que crea un objeto coordenada pasando los datos
     public Medida(float valor, String tiempo, String nombre_sensor, Coordenada coordenada) {
         this.valor = valor;
@@ -59,5 +63,31 @@ public class Medida {
 
     public void setCoordenada(Coordenada coordenada) {
         this.coordenada = coordenada;
+    }
+
+
+
+    public int getID_medida() {
+        return ID_medida;
+    }
+
+    public void setID_medida(int ID_medida) {
+        this.ID_medida = ID_medida;
+    }
+
+    public int getID_placa() {
+        return ID_placa;
+    }
+
+    public void setID_placa(int ID_placa) {
+        this.ID_placa = ID_placa;
+    }
+
+    public String getTipo_medida() {
+        return tipo_medida;
+    }
+
+    public void setTipo_medida(String tipo_medida) {
+        this.tipo_medida = tipo_medida;
     }
 }

@@ -33,7 +33,7 @@ import java.util.List;
 public class Login extends AppCompatActivity {
 
     //Se declaran las variables
-    String ip = "192.168.0.14";
+    String ip = "192.168.1.98";
 
     //Sirve para guardar datos permanentes
     SharedPreferences myPreferences;
@@ -149,6 +149,7 @@ public class Login extends AppCompatActivity {
                                             //Si todo es correcto guardo la sesion
 
                                             myEditor.putBoolean("sesion", verdad.getEstado());
+                                            myEditor.putString("contrasenya2", contrasenya.getText().toString());
                                             myEditor.commit();
                                             sesion = myPreferences.getBoolean("sesion", false);
                                             //Log.d("test", "onCreate: " + sesion);

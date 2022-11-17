@@ -144,7 +144,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/textView19"
+        android:id="@+id/ubicacionMedicion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -184,7 +184,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView19"
+        app:layout_constraintTop_toBottomOf="@+id/ubicacionMedicion"
         tools:ignore="TouchTargetSizeCheck"></EditText>
 
     <ImageView
@@ -222,7 +222,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
     <TextView
-        android:id="@+id/textView17"
+        android:id="@+id/fechaMedicion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
