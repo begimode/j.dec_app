@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -32,6 +31,7 @@ public class EditarPerfil extends AppCompatActivity {
 
     //Se declran las variables
     String ip = "192.168.1.98";
+
 
     ImageView atras;
     TextView usuario;
@@ -81,7 +81,7 @@ public class EditarPerfil extends AppCompatActivity {
 
         //Relaciono las variables con los id del layout
         cerrarSesion = findViewById(R.id.imageView6);
-        atras = findViewById(R.id.imageView5);
+        atras = findViewById(R.id.atras);
         usuario = findViewById(R.id.textView4);
         nombre = findViewById(R.id.editNombre);
         apellidos = findViewById(R.id.editApellidos);

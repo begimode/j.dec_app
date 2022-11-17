@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:android="http://schemas.android.com/apk/res/android">
+<resources xmlns:tools="http://schemas.android.com/tools" xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="botonStyle" parent="@android:style/TextAppearance.Medium">
+    <style name="botonStyle">
         <item name="android:background">@color/button</item>
-        <item name="android:textColor">#FFFFFF</item>
-        <item name="android:textSize">18dp</item>
+        <item name="cornerRadius"> 50dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">15dp</item>
         <item name="android:fontFamily">@font/yahei</item>
-        <item name="cornerRadius"> 20dp</item>
+        <item name= "android:gravity"> center</item>
+
+
     </style>
 
 

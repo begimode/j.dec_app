@@ -54,7 +54,8 @@ public class Devices extends AppCompatActivity {
 
 
         //Relaciono las variables con los id del layout
-        //ultimaMedida = (TextView)findViewById(R.id.textView17);
+        TextView ultimaMedida = (TextView) findViewById(R.id.textView17);
+
         atras = (ImageView)findViewById(R.id.atras);
 
 

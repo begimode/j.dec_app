@@ -1,5 +1,6 @@
 plugins {
     id 'com.android.application'
+
 }
 
 android {
@@ -46,6 +47,10 @@ dependencies {
     implementation 'com.amitshekhar.android:rx-android-networking:1.0.2'
     implementation 'com.amitshekhar.android:rx2-android-networking:1.0.2'
     implementation 'com.amitshekhar.android:jackson-android-networking:1.0.2'
+
+    // maps
+    implementation 'com.google.android.gms:play-services-location:21.0.1'
+    implementation 'com.google.android.gms:play-services-maps:18.1.0'
 
     implementation 'com.journeyapps:zxing-android-embedded:4.1.0'
 

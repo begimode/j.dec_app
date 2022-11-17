@@ -1,5 +1,6 @@
 package com.jorge.sprint0_jorgelarrosaquesada;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -7,6 +8,7 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.le.BluetoothLeScanner;
@@ -14,10 +16,12 @@ import android.bluetooth.le.ScanCallback;
 import android.bluetooth.le.ScanFilter;
 import android.bluetooth.le.ScanResult;
 import android.content.Context;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -41,8 +45,22 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.androidnetworking.interfaces.ParsedRequestListener;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApi;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -51,10 +69,11 @@ import com.google.zxing.integration.android.IntentResult;
 // J.Dec
 //----------------------------------------------------
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     //Se declran las variables
     String ip = "192.168.1.98";
+
     Boolean sesion;
     ImageView devices;
     private int ultimaMedida;
@@ -63,13 +82,14 @@ public class MainActivity extends AppCompatActivity {
     private ImageView perfil;
     private ImageView information;
     private LocationManager locManager;
+    FloatingActionButton fab;
 
     //Boton y Texto qr
     private ImageView buttonScan;
     private String UUIDScan;
 
     //Handler
-    final Handler handler= new Handler();
+    final Handler handler = new Handler();
 
     // --------------------------------------------------------------
     // --------------------------------------------------------------
@@ -110,8 +130,12 @@ public class MainActivity extends AppCompatActivity {
         Log.d("datos", ": " + myPreferences.getString("estado", "unknown"));
 
 
+        //mapa
+        SupportMapFragment supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapa);
+        supportMapFragment.getMapAsync(this);
+
         //Compruebo si la sesion este iniciada, si es falso te envía al login
-        if(sesion == false){
+        if (sesion == false) {
             Intent intent = new Intent(MainActivity.this, Login.class);
             startActivity(intent);
         }
@@ -120,25 +144,24 @@ public class MainActivity extends AppCompatActivity {
         AndroidNetworking.initialize(getApplicationContext());
 
         //Se solicitan los permisos para que el usuario seleccione si desea permitir el acceso al GPS del dispositivo:
-        ActivityCompat.requestPermissions(MainActivity.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
 
         //Se comprueba si se han concedido los permisos para mostrar los datos de latitud, longitud, altura y precisión del dispositivo
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-        {
-            Toast.makeText(getApplicationContext(),"Faltan los permisos",Toast.LENGTH_SHORT).show();
-            ActivityCompat.requestPermissions(MainActivity.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(getApplicationContext(), "Faltan los permisos", Toast.LENGTH_SHORT).show();
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
 
             return;
-        }else {
+        } else {
             //Te muestra un texto que está el gps activado
-            Toast.makeText(getApplicationContext(),"GPS Activado",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "GPS Activado", Toast.LENGTH_SHORT).show();
         }
-
         //Relaciono las variables con los id del layout
         perfil = findViewById(R.id.perfilImage);
         information = findViewById(R.id.imageInformation);
         buttonScan = findViewById(R.id.imageView8);
         devices = findViewById(R.id.profileImage);
+
 
         //Botón que te lleva a la pestaña de EditPerfil.
         perfil.setOnClickListener(new View.OnClickListener() {
@@ -157,6 +180,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
 
         //Scan
         //Botón para el escaneao del qr, Botón para llamar a la función botonLeerCodigoQR()
@@ -187,6 +211,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d(ETIQUETA_LOG, " onCreate(): termina ");
 
     } // onCreate()
+
 
     private void getDeviceInfo() {
         AndroidNetworking.get("http://" + ip + ":8080/buscarPlacaConId/" + myPreferences.getInt("ID_user", 0))
@@ -228,7 +253,7 @@ public class MainActivity extends AppCompatActivity {
     // .................................................................
 
     @SuppressLint("MissingPermission")
-    private void mostrarInformacionDispositivoBTLE(ScanResult resultado ) {
+    private void mostrarInformacionDispositivoBTLE(ScanResult resultado) {
 
         BluetoothDevice bluetoothDevice = resultado.getDevice();
         byte[] bytes = resultado.getScanRecord().getBytes();
@@ -289,7 +314,7 @@ public class MainActivity extends AppCompatActivity {
     // .................................................................
 
     @SuppressLint("MissingPermission")
-    private void buscarEsteDispositivoBTLE(final UUID dispositivoBuscado ) {
+    private void buscarEsteDispositivoBTLE(final UUID dispositivoBuscado) {
         Log.d(ETIQUETA_LOG, " buscarEsteDispositivoBTLE(): empieza ");
 
         Log.d(ETIQUETA_LOG, "  buscarEsteDispositivoBTLE(): instalamos scan callback ");
@@ -299,11 +324,11 @@ public class MainActivity extends AppCompatActivity {
 
         this.callbackDelEscaneo = new ScanCallback() {
             @Override
-            public void onScanResult( int callbackType, ScanResult resultado ) {
+            public void onScanResult(int callbackType, ScanResult resultado) {
                 super.onScanResult(callbackType, resultado);
                 Log.d(ETIQUETA_LOG, "  buscarEsteDispositivoBTLE(): onScanResult() ");
 
-                mostrarInformacionDispositivoBTLE( resultado );
+                mostrarInformacionDispositivoBTLE(resultado);
             }
 
             @Override
@@ -321,13 +346,13 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        ScanFilter sf = new ScanFilter.Builder().setDeviceName( dispositivoBuscado.toString() ).build();
+        ScanFilter sf = new ScanFilter.Builder().setDeviceName(dispositivoBuscado.toString()).build();
 
-        Log.d(ETIQUETA_LOG, "  buscarEsteDispositivoBTLE(): empezamos a escanear buscando: " + dispositivoBuscado );
+        Log.d(ETIQUETA_LOG, "  buscarEsteDispositivoBTLE(): empezamos a escanear buscando: " + dispositivoBuscado);
         //Log.d(ETIQUETA_LOG, "  buscarEsteDispositivoBTLE(): empezamos a escanear buscando: " + dispositivoBuscado
         //      + " -> " + Utilidades.stringToUUID( dispositivoBuscado ) );
 
-        this.elEscanner.startScan( this.callbackDelEscaneo );
+        this.elEscanner.startScan(this.callbackDelEscaneo);
     } // ()
 
     // .................................................................
@@ -338,13 +363,13 @@ public class MainActivity extends AppCompatActivity {
     // .................................................................
 
     @SuppressLint("MissingPermission")
-    private void detenerBusquedaDispositivosBTLE(){
+    private void detenerBusquedaDispositivosBTLE() {
 
-        if ( this.callbackDelEscaneo == null ) {
+        if (this.callbackDelEscaneo == null) {
             return;
         }
 
-        this.elEscanner.stopScan( this.callbackDelEscaneo );
+        this.elEscanner.stopScan(this.callbackDelEscaneo);
         this.callbackDelEscaneo = null;
 
 
@@ -366,15 +391,15 @@ public class MainActivity extends AppCompatActivity {
 
         bta.enable();
 
-        Log.d(ETIQUETA_LOG, " inicializarBlueTooth(): habilitado =  " + bta.isEnabled() );
+        Log.d(ETIQUETA_LOG, " inicializarBlueTooth(): habilitado =  " + bta.isEnabled());
 
-        Log.d(ETIQUETA_LOG, " inicializarBlueTooth(): estado =  " + bta.getState() );
+        Log.d(ETIQUETA_LOG, " inicializarBlueTooth(): estado =  " + bta.getState());
 
         Log.d(ETIQUETA_LOG, " inicializarBlueTooth(): obtenemos escaner btle ");
 
         this.elEscanner = bta.getBluetoothLeScanner();
 
-        if ( this.elEscanner == null ) {
+        if (this.elEscanner == null) {
             Log.d(ETIQUETA_LOG, " inicializarBlueTooth(): Socorro: NO hemos obtenido escaner btle  !!!!");
 
         }
@@ -385,14 +410,12 @@ public class MainActivity extends AppCompatActivity {
                 ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED
                         || ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_ADMIN) != PackageManager.PERMISSION_GRANTED
                         || ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-        )
-        {
+        ) {
             ActivityCompat.requestPermissions(
                     MainActivity.this,
                     new String[]{Manifest.permission.BLUETOOTH, Manifest.permission.BLUETOOTH_ADMIN, Manifest.permission.ACCESS_FINE_LOCATION},
                     CODIGO_PETICION_PERMISOS);
-        }
-        else {
+        } else {
             Log.d(ETIQUETA_LOG, " inicializarBlueTooth(): parece que YA tengo los permisos necesarios !!!!");
 
         }
@@ -407,7 +430,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void onRequestPermissionsResult(int requestCode, String[] permissions,
                                            int[] grantResults) {
-        super.onRequestPermissionsResult( requestCode, permissions, grantResults);
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         switch (requestCode) {
             case CODIGO_PETICION_PERMISOS:
@@ -418,13 +441,14 @@ public class MainActivity extends AppCompatActivity {
                     Log.d(ETIQUETA_LOG, " onRequestPermissionResult(): permisos concedidos  !!!!");
                     // Permission is granted. Continue the action or workflow
                     // in your app.
-                }  else {
+                } else {
 
                     Log.d(ETIQUETA_LOG, " onRequestPermissionResult(): Socorro: permisos NO concedidos  !!!!");
 
                 }
                 return;
         }
+
         // Other 'case' lines to check for other
         // permissions this app might request.
     } // ()
@@ -441,7 +465,7 @@ public class MainActivity extends AppCompatActivity {
     // Esta función crea un objeto medida mediante un constructor al cual se le pasan los valores mencionados arriba y lo devuelve.
     // .................................................................
 
-    public Medida guardarMedida(float valor, int sensor){
+    public Medida guardarMedida(float valor, int sensor) {
         Medida medida = new Medida();
 
         //Valor
@@ -455,9 +479,9 @@ public class MainActivity extends AppCompatActivity {
 
         //Nombre del Sensor
         String nombre_sensor;
-        if(sensor == 1){
+        if (sensor == 1) {
             nombre_sensor = "test";
-        }else {
+        } else {
             nombre_sensor = "Ozono";
         }
 
@@ -523,7 +547,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-        Toast.makeText(getApplicationContext(),"Datos Enviados",Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "Datos Enviados", Toast.LENGTH_SHORT).show();
     }
 
     // .................................................................
@@ -534,7 +558,7 @@ public class MainActivity extends AppCompatActivity {
     // Esta función lee el qr
     // .................................................................
 
-    public void botonLeerCodigoQR(View view){
+    public void botonLeerCodigoQR(View view) {
         IntentIntegrator integrador = new IntentIntegrator(MainActivity.this);
         integrador.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
         integrador.setPrompt("lECTOR - cdp");
@@ -555,12 +579,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         IntentResult resultado = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
 
-        if(resultado != null){
-            if(resultado.getContents() == null){
+        if (resultado != null) {
+            if (resultado.getContents() == null) {
                 Toast.makeText(this, "Lectura cancelada", Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(this, resultado.getContents(), Toast.LENGTH_LONG).show();
-                buscarEsteDispositivoBTLE( Utilidades.stringToUUID( resultado.getContents() ) );
+                buscarEsteDispositivoBTLE(Utilidades.stringToUUID(resultado.getContents()));
 
                 UUIDScan = resultado.getContents();
                 enviarUUIDAlServidor();
@@ -579,15 +603,46 @@ public class MainActivity extends AppCompatActivity {
     // Esta función llama a botonEnviarAlServidor() tras 10 segundos
     // .................................................................
 
-    private void ejecutarDelay(){
+    private void ejecutarDelay() {
 
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                botonEnviarAlServidor();;//llamamos nuestro metodo
-                handler.postDelayed(this,10000);//se ejecutara cada 10 segundos
+                botonEnviarAlServidor();
+                ;//llamamos nuestro metodo
+                handler.postDelayed(this, 10000);//se ejecutara cada 10 segundos
             }
-        },10000);//empezara a ejecutarse después de 5 milisegundos
+        }, 10000);//empezara a ejecutarse después de 5 milisegundos
+
+    }
+
+
+    @Override
+    public void onMapReady(GoogleMap mapa) {
+
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        mapa.setMyLocationEnabled(true);
+
+        locManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        //Posteriormente, se asigna a la variable de tipo Location que accederá a la última posición conocida proporcionada por el proveedor
+        @SuppressLint("MissingPermission") Location location = locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+        //LatLng real = new LatLng(0, 0);
+
+        LatLng real = new LatLng(location.getLatitude(), location.getLongitude());
+
+        mapa.animateCamera(CameraUpdateFactory.newLatLngZoom(real,12));
 
     }
 

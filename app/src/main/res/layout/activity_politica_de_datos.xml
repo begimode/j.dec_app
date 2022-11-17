@@ -29,7 +29,7 @@
                 app:srcCompat="@drawable/icon6" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/olvidar"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
                 android:fontFamily="@font/yahei"
