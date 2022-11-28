@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -21,6 +22,7 @@ import com.androidnetworking.interfaces.StringRequestListener;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -34,9 +36,19 @@ import java.util.List;
 public class Devices extends AppCompatActivity {
 
     //Se declaran las variables
-    ImageView atras;
-    String ip = "192.168.1.98";
+    String ip = "192.168.1.103";
 
+    //Textviews
+    TextView nombreDispositivo;
+    TextView LastMedicion;
+    TextView MinMedicion;
+    TextView MaxMedicion;
+    TextView LastFecha;
+
+    //ImageViews
+    ImageView atras;
+    ImageView refresh;
+    ImageView deleteButton;
 
     //Datos usuario
     public int ID_user;
@@ -50,13 +62,22 @@ public class Devices extends AppCompatActivity {
 
         //Obtenemos del Intent los datos que se han pasado de la pestaña MainActivity
         ID_user = getIntent().getExtras().getInt("ID_user");
+        Log.d("ID USUARIO", String.valueOf(ID_user));
         ID_placa = getIntent().getExtras().getInt("ID_placa");
 
 
-        //Relaciono las variables con los id del layout
-        TextView ultimaMedida = (TextView) findViewById(R.id.textView17);
+        //TextViews
+        nombreDispositivo = findViewById(R.id.nombreDispositivo);
+        LastMedicion = findViewById(R.id.LastMedicion);
+        MinMedicion = findViewById(R.id.MinMedicion);
+        MaxMedicion = findViewById(R.id.MaxMedicion);
+        //LastFecha = findViewById(R.id.LastFecha);
 
+        //ImageViews
         atras = (ImageView)findViewById(R.id.atras);
+        refresh = (ImageView)findViewById(R.id.refreshButton);
+        deleteButton = (ImageView) findViewById(R.id.deleteDevice);
+
 
 
         //Botón que te lleva a la pestaña de Login.
@@ -67,10 +88,27 @@ public class Devices extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        Log.d("ID USUARIO DEVICES", String.valueOf(ID_user));
+
+        //Botón que refresca la información
+        refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getDeviceInfo();
+                Log.d("REFRESH BUTTON", "Se ha pulsado el boton de refrescar");
+            }
+        });
+
+        //Botón que borra la placa
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // deleteDevice();
+            }
+        });
 
         getDeviceInfo();
     }
+
 
 
     public void getDeviceInfo(){
@@ -87,7 +125,6 @@ public class Devices extends AppCompatActivity {
                             String uuid = response.getString("uuid");
                             int id = response.getInt("ID_placa");
 
-                            Log.d("ID DEL DISPOSITIVO", String.valueOf(id));
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -109,28 +146,32 @@ public class Devices extends AppCompatActivity {
                 .getAsObjectList(Medida.class, new ParsedRequestListener<List<Medida>>() {
                     @Override
                     public void onResponse(List<Medida> medidas) {
+
                         List<Integer> listaValores = new ArrayList<Integer>();
-                        List<String> listaFechas = new ArrayList<String>();
+                        List<Integer> listaFechas = new ArrayList<Integer>();
                         List<Coordenada> listaUbicacion = new ArrayList<Coordenada>();
+
                         // do anything with response
+                        int maxMedida = 0;
+                        int minMedida = 0;
+                        int lastMedida = 0;
+                        int lastFecha = 0;
+
                         for (Medida medida : medidas) {
                             listaValores.add((int) medida.getValor());
                             listaFechas.add(medida.getTiempo());
                             listaUbicacion.add(medida.getCoordenada());
 
-
-                            Log.d("LISTA MEDIDADAS", String.valueOf(listaValores));
-                            Integer maxMedida = Collections.max(listaValores);
-                            Integer minMedida = Collections.min(listaValores);
-
-                            Log.d("VALOR MAX LSITA VALORES", String.valueOf(maxMedida));
-                            Log.d("VALOR MIN LSITA VALORES", String.valueOf(minMedida));
-
-
                             Log.d("LISTA FECHAS", String.valueOf(listaFechas));
-                            Log.d("LISTA UBICACIONES", String.valueOf(listaUbicacion));
+
+
+                            maxMedida = Collections.max(listaValores);
+                            minMedida = Collections.min(listaValores);
+                            lastMedida = listaValores.get(listaValores.size()-1);
+                            lastFecha = listaFechas.get(listaFechas.size()-1);
 
                         }
+                        mostrarMedidas(maxMedida, minMedida, lastMedida, lastFecha);
 
                     }
                     @Override
@@ -139,5 +180,31 @@ public class Devices extends AppCompatActivity {
                     }
                 });
     }
+
+    private void mostrarMedidas(Integer maxMedida, Integer minMedida, Integer lastMedida, Integer lastFecha) {
+        MaxMedicion.setText(maxMedida.toString());
+        MinMedicion.setText(minMedida.toString());
+        LastMedicion.setText(lastMedida.toString());
+    }
+
+    private void deleteDevice() {
+        AndroidNetworking.delete("")
+                .addQueryParameter("limit", "3")
+                .addHeaders("token", "1234")
+                .setTag("test")
+                .setPriority(Priority.LOW)
+                .build()
+                .getAsJSONArray(new JSONArrayRequestListener() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        // do anything with response
+                    }
+                    @Override
+                    public void onError(ANError error) {
+                        // handle error
+                    }
+                });
+    }
+
 
 }

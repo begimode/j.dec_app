@@ -12,7 +12,7 @@ public class Medida {
 
     //Atributos
     private float valor;
-    private String tiempo;
+    private int tiempo;
     private String nombre_sensor;
     private Coordenada coordenada;
 
@@ -21,7 +21,7 @@ public class Medida {
     private String tipo_medida;
 
     //Constructor que crea un objeto coordenada pasando los datos
-    public Medida(float valor, String tiempo, String nombre_sensor, Coordenada coordenada) {
+    public Medida(float valor, int tiempo, String nombre_sensor, Coordenada coordenada) {
         this.valor = valor;
         this.tiempo = tiempo;
         this.nombre_sensor = nombre_sensor;
@@ -41,11 +41,11 @@ public class Medida {
         this.valor = valor;
     }
 
-    public String getTiempo() {
+    public int getTiempo() {
         return tiempo;
     }
 
-    public void setTiempo(String tiempo) {
+    public void setTiempo(int tiempo) {
         this.tiempo = tiempo;
     }
 
