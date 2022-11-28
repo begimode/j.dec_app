@@ -3,340 +3,402 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".politica_de_datos">
+    android:layout_height="match_parent">
 
     <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="0dp"
-        android:layout_height="65dp"
+        android:id="@+id/linearLayout4"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/scrollView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textView32"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/yahei"
+            android:gravity="center|center_vertical"
+            android:text="Contaminantes"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="60dp"
-                android:layout_height="20dp"
-                android:layout_gravity="center"
-                app:srcCompat="@drawable/icon6" />
+            <androidx.cardview.widget.CardView
+                android:id="@+id/no2_card"
+                android:layout_width="wrap_content"
+                android:layout_height="140dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginBottom="20dp"
+                app:cardCornerRadius="10dp">
 
-            <TextView
-                android:id="@+id/xd"
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:fontFamily="@font/yahei"
-                android:gravity="center|center_horizontal"
-                android:text="Información adicional"
-                android:textColor="#393737"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="140dp"
+                    android:layout_height="140dp">
+
+                    <TextView
+                        android:id="@+id/textView17"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="Dióxido de nitrógeno"
+                        android:textColor="#353232"
+                        app:layout_constraintEnd_toEndOf="@+id/textView34"
+                        app:layout_constraintStart_toStartOf="@+id/textView34"
+                        app:layout_constraintTop_toBottomOf="@+id/textView34" />
+
+                    <TextView
+                        android:id="@+id/textView34"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30dp"
+                        android:fontFamily="@font/yahei"
+                        android:text="NO2"
+                        android:textSize="50sp"
+                        app:layout_constraintBottom_toTopOf="@+id/textView17"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/co2_card"
+                android:layout_width="wrap_content"
+                android:layout_height="140dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="20dp"
+                app:cardCornerRadius="10dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="140dp"
+                    android:layout_height="140dp">
+
+                    <TextView
+                        android:id="@+id/textView17"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="Dióxido de carbono"
+                        android:textColor="#353232"
+                        app:layout_constraintEnd_toEndOf="@+id/textView34"
+                        app:layout_constraintStart_toStartOf="@+id/textView34"
+                        app:layout_constraintTop_toBottomOf="@+id/textView34" />
+
+                    <TextView
+                        android:id="@+id/textView34"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30dp"
+                        android:fontFamily="@font/yahei"
+                        android:text="CO2"
+                        android:textSize="50sp"
+                        app:layout_constraintBottom_toTopOf="@+id/textView17"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/co_card"
+                android:layout_width="140dp"
+                android:layout_height="140dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginBottom="20dp"
+                app:cardCornerRadius="10dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="140dp"
+                    android:layout_height="140dp">
+
+                    <TextView
+                        android:id="@+id/textView17"
+                        android:layout_width="115dp"
+                        android:layout_height="37dp"
+                        android:layout_marginTop="5dp"
+                        android:gravity="center"
+                        android:text="Monóxido de carbono"
+                        android:textColor="#353232"
+                        app:layout_constraintEnd_toEndOf="@+id/textView34"
+                        app:layout_constraintStart_toStartOf="@+id/textView34"
+                        app:layout_constraintTop_toBottomOf="@+id/textView34" />
+
+                    <TextView
+                        android:id="@+id/textView34"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30dp"
+                        android:fontFamily="@font/yahei"
+                        android:text="CO"
+                        android:textSize="50sp"
+                        app:layout_constraintBottom_toTopOf="@+id/textView17"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/so2_card"
+                android:layout_width="140dp"
+                android:layout_height="140dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="20dp"
+                app:cardCornerRadius="10dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="140dp"
+                    android:layout_height="140dp">
+
+                    <TextView
+                        android:id="@+id/textView17"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="Dióxido de azufre"
+                        android:textColor="#353232"
+                        app:layout_constraintEnd_toEndOf="@+id/textView33"
+                        app:layout_constraintStart_toStartOf="@+id/textView33"
+                        app:layout_constraintTop_toBottomOf="@+id/textView33" />
+
+                    <TextView
+                        android:id="@+id/textView33"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30dp"
+                        android:fontFamily="@font/yahei"
+                        android:text="SO2"
+                        android:textSize="50sp"
+                        app:layout_constraintBottom_toTopOf="@+id/textView17"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/o3_card"
+                android:layout_width="140dp"
+                android:layout_height="140dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginBottom="20dp"
+                app:cardCornerRadius="10dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="140dp"
+                    android:layout_height="140dp">
+
+                    <TextView
+                        android:id="@+id/textView17"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="Ozono"
+                        android:textColor="#353232"
+                        app:layout_constraintEnd_toEndOf="@+id/textoOzono"
+                        app:layout_constraintStart_toStartOf="@+id/textoOzono"
+                        app:layout_constraintTop_toBottomOf="@+id/textoOzono" />
+
+                    <TextView
+                        android:id="@+id/textoOzono"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30dp"
+                        android:fontFamily="@font/yahei"
+                        android:text="03"
+                        android:textSize="50sp"
+                        app:layout_constraintBottom_toTopOf="@+id/textView17"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
 
         </LinearLayout>
 
     </LinearLayout>
 
-    <ScrollView
-        android:id="@+id/scrollView2"
+    <LinearLayout
+        android:id="@+id/tab"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="100dp"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+        app:layout_constraintStart_toStartOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="15dp"
-                android:fontFamily="@font/yahei"
-                android:text="El ozono es un importante factor de mortalidad y morbilidad por asma, mientras que el dióxido de nitrógeno y el dióxido de azufre pueden ir asociados a casos de asma, síntomas bronquiales, alveolitis e insuficiencia respiratoria. "
-                android:textAlignment="viewStart" />
-
-            <TextView
-                android:id="@+id/textView5"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="15dp"
-                android:fontFamily="@font/yahei"
-                android:text="Ozono (O3)  "
-                android:textAlignment="center"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/textView8"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="15dp"
-                android:fontFamily="@font/yahei"
-                android:text="Valores fijados por las directrices   O3"
-                android:textAlignment="viewStart" />
-
-            <TextView
-                android:id="@+id/textView9"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="15dp"
-                android:fontFamily="@font/yahei"
-                android:text="- 100 μg/m3, máximo diario de periodos de 8 horas"
-                android:textAlignment="viewStart" />
-
-            <TextView
-                android:id="@+id/textView10"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="15dp"
-                android:fontFamily="@font/yahei"
-                android:text="- 60 μg/m3, promedio de periodos de 8 horas, temporada máxima**   "
-                android:textAlignment="viewStart" />
-
-            <TextView
-                android:id="@+id/textView11"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="15dp"
-                android:fontFamily="@font/yahei"
-                android:text="- * Percentil 99 (es decir, 3-4 días de superación por año)   "
-                android:textAlignment="viewStart" />
-
-            <TextView
-                android:id="@+id/textView12"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="15dp"
-                android:fontFamily="@font/yahei"
-                android:text="Efectos sobre la salud  "
-                android:textAlignment="viewStart"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/textView13"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="15dp"
-                android:fontFamily="@font/yahei"
-                android:text="El exceso de ozono en el aire puede producir efectos adversos importantes sobre la salud humana. Puede causar problemas respiratorios, provocar asma, reducir la función pulmonar y dar lugar a enfermedades pulmonares. "
-                android:textAlignment="viewStart" />
-
-            <TextView
-                android:id="@+id/textView14"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="15dp"
-                android:fontFamily="@font/yahei"
-                android:text="Dióxido de nitrógeno (NO2) "
-                android:textAlignment="center"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/textView15"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="15dp"
-                android:fontFamily="@font/yahei"
-                android:text="Valores fijados por las directrices   NO2 "
-                android:textAlignment="viewStart" />
-
-            <TextView
-                android:id="@+id/textView16"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="15dp"
-                android:fontFamily="@font/yahei"
-                android:text="10 μg/m3 de media anual"
-                android:textAlignment="viewStart" />
-
-            <TextView
-                android:id="@+id/textView7"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="15dp"
-                android:fontFamily="@font/yahei"
-                android:text="25 μg/m3 de media diaria  "
-                android:textAlignment="viewStart" />
-
-            <TextView
-                android:id="@+id/textView22"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="15dp"
-                android:fontFamily="@font/yahei"
-                android:text="El valor actual de 10 µg/m3 (media anual) que fijan las directrices de la OMS tiene por objeto proteger a la población de los efectos nocivos para la salud del NO2 en estado gaseoso. "
-                android:textAlignment="viewStart" />
-
-            <TextView
-                android:id="@+id/textView23"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="15dp"
-                android:fontFamily="@font/yahei"
-                android:text="Efectos sobre la salud "
-                android:textAlignment="viewStart"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/textView24"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="15dp"
-                android:fontFamily="@font/yahei"
-                android:text="Estudios epidemiológicos han revelado que los síntomas de bronquitis en niños asmáticos aumentan en relación con la exposición prolongada al NO2. La disminución del desarrollo de la función pulmonar también se asocia con las concentraciones de NO2 registradas (u observadas) actualmente en ciudades europeas y norteamericanas. "
-                android:textAlignment="viewStart" />
-
-            <TextView
-                android:id="@+id/textView25"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="15dp"
-                android:fontFamily="@font/yahei"
-                android:text="Dióxido de azufre (SO2)"
-                android:textAlignment="center"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/textView26"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="15dp"
-                android:fontFamily="@font/yahei"
-                android:text="Valores fijados por las directrices  SO2 "
-                android:textAlignment="viewStart" />
-
-            <TextView
-                android:id="@+id/textView27"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="15dp"
-                android:fontFamily="@font/yahei"
-                android:text="40 μg/m3 de media diaria"
-                android:textAlignment="viewStart" />
-
-            <TextView
-                android:id="@+id/textView28"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="15dp"
-                android:fontFamily="@font/yahei"
-                android:text="Los estudios indican que un porcentaje de las personas con asma experimenta cambios en la función pulmonar y síntomas respiratorios tras periodos de exposición al SO2. Actualmente se sabe que los efectos nocivos sobre la salud están asociados a niveles de SO2 muy inferiores a los aceptados hasta ahora. Se requiere un mayor grado de protección. Pese a las dudas que plantea todavía la causalidad de los efectos de bajas concentraciones de SO2, es probable que la reducción de las concentraciones disminuya la exposición a otros contaminantes."
-                android:textAlignment="viewStart" />
-
-            <TextView
-                android:id="@+id/textView29"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="15dp"
-                android:fontFamily="@font/yahei"
-                android:text="Efectos sobre la salud  "
-                android:textAlignment="viewStart"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/textView30"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="15dp"
-                android:fontFamily="@font/yahei"
-                android:text="El SO2 puede afectar al sistema respiratorio y a las funciones pulmonares, y causa irritación ocular. La inflamación del sistema respiratorio provoca tos, secreción mucosa y agravamiento del asma y la bronquitis crónica; asimismo, aumenta la propensión de las personas a contraer infecciones del sistema respiratorio. Los ingresos hospitalarios por cardiopatías y la mortalidad aumentan en los días en que los niveles de SO2 son más elevados. Cuando el SO2 se combina con agua forma ácido sulfúrico, el componente principal de la lluvia ácida, que es una de las causas de la deforestación. "
-                android:textAlignment="viewStart" />
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="25dp"
+                android:layout_marginTop="30dp"
+                android:layout_weight="1"
                 android:orientation="vertical">
 
+                <ImageView
+                    android:id="@+id/imageInformation"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/icon2" />
+
                 <TextView
-                    android:id="@+id/textView18"
+                    android:id="@+id/textHome"
                     android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Información"
+                    android:textSize="10sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="30dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/imageNotificaciones"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/notification" />
+
+                <TextView
+                    android:id="@+id/textNotificaciones"
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Notificaciones"
+                    android:textSize="10sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/imageView8"
+                    android:layout_width="82dp"
+                    android:layout_height="65dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/unnamed" />
+
+                <TextView
+                    android:id="@+id/dispositivos_text2"
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:layout_marginBottom="4dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Escaner"
+                    android:textSize="10sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="30dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/profileImage"
+                    android:layout_width="25dp"
                     android:layout_height="wrap_content"
-                    android:text="©2022 SoftAir"
-                    android:textAlignment="center" />
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/usb" />
+
+                <TextView
+                    android:id="@+id/dispositivos_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Dispositivos"
+                    android:textSize="10sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="30dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/perfilImage"
+                    android:layout_width="25dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/profile" />
+
+                <TextView
+                    android:id="@+id/perfilText"
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Perfil"
+                    android:textSize="10sp" />
+
             </LinearLayout>
 
         </LinearLayout>
-    </ScrollView>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

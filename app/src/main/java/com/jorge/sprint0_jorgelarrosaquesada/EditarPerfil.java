@@ -22,6 +22,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Timer;
+
 //----------------------------------------------------
 // Archivo: EditarPerfil.java
 // J.Dec
@@ -30,7 +32,7 @@ import org.json.JSONObject;
 public class EditarPerfil extends AppCompatActivity {
 
     //Se declran las variables
-    String ip = "192.168.1.98";
+    String ip = "192.168.96.243";
 
 
     ImageView atras;
@@ -46,6 +48,7 @@ public class EditarPerfil extends AppCompatActivity {
 
     SharedPreferences myPreferences;
     SharedPreferences.Editor myEditor;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,6 +147,7 @@ public class EditarPerfil extends AppCompatActivity {
             jsonObject.put("contrasenya", contrasenya.getText().toString());
 
 
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -157,12 +161,17 @@ public class EditarPerfil extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONArray response) {
                         //pulsarCerrarSesion();
+                        //Se detiene el timer para subir medidas
+                        new MainActivity().pararTimer();
+                        new MainActivity().detenerBusquedaDispositivosBTLE();
                     }
 
                     @Override
                     public void onError(ANError error) {
                         //Log.d("hola", "onError: " + error);
                         pulsarCerrarSesion2();
+                        new MainActivity().pararTimer();
+                        new MainActivity().detenerBusquedaDispositivosBTLE();
                     }
                 });
 
@@ -178,6 +187,7 @@ public class EditarPerfil extends AppCompatActivity {
     // .................................................................
 
     private void pulsarCerrarSesion(View view){
+
         //Al cerrar la sesión modifico el estado de la sesión
         myEditor.putBoolean("sesion", false);
         myEditor.putString("correo", null);
@@ -187,12 +197,24 @@ public class EditarPerfil extends AppCompatActivity {
         myEditor.putString("apellidos", null);
         myEditor.putString("estado", null);
         myEditor.putInt("id_user", 0);
-        myEditor.commit();
+
+        myEditor.putInt("ID_placa", 0);
+        myEditor.putString("UUID_placa", null);
+
+
         sesion = myPreferences.getBoolean("sesion", false);
+        myEditor.commit();
+
         //Log.d("test", "onCreate: " + sesion);
+
 
         Intent intent = new Intent(EditarPerfil.this, Login.class);
         startActivity(intent);
+
+        //Se detiene el timer para subir medidas
+        new MainActivity().pararTimer();
+        new MainActivity().detenerBusquedaDispositivosBTLE();
+
     }
 
     // .................................................................
@@ -212,11 +234,18 @@ public class EditarPerfil extends AppCompatActivity {
         myEditor.putString("apellidos", null);
         myEditor.putString("estado", null);
         myEditor.putInt("id_user", 0);
-        myEditor.commit();
         sesion = myPreferences.getBoolean("sesion", false);
         //Log.d("test", "onCreate: " + sesion);
+
+        myEditor.putInt("ID_placa", 0);
+        myEditor.putString("UUID_placa", null);
+        myEditor.commit();
+
+        new MainActivity().pararTimer();
+        new MainActivity().detenerBusquedaDispositivosBTLE();
 
         Intent intent = new Intent(EditarPerfil.this, Login.class);
         startActivity(intent);
     }
+
 }

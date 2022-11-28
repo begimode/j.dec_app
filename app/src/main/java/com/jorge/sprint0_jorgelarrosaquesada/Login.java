@@ -17,6 +17,7 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONArrayRequestListener;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.androidnetworking.interfaces.ParsedRequestListener;
 
 import org.json.JSONArray;
@@ -34,7 +35,7 @@ import java.util.List;
 public class Login extends AppCompatActivity {
 
     //Se declaran las variables
-    String ip = "192.168.1.98";
+    String ip = "192.168.96.243";
 
 
     //Sirve para guardar datos permanentes
@@ -68,10 +69,15 @@ public class Login extends AppCompatActivity {
         */
 
         //Compruebo si la sesion este iniciada y si es así pasa al MainActivity
+        /*
         if(sesion){
             Intent intent = new Intent(Login.this, MainActivity.class);
             startActivity(intent);
         }
+
+         */
+
+
 
         //Librería encargada ser cocentarse con el Servidor
         AndroidNetworking.initialize(getApplicationContext());
@@ -108,6 +114,7 @@ public class Login extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
     }
 
     // .................................................................
@@ -140,6 +147,8 @@ public class Login extends AppCompatActivity {
                         myEditor.putString("estado", user.getEstado());
                         myEditor.putInt("ID_user",  id_);
 
+                        myEditor.commit();
+
 
                         Log.d("pepe", "correo : " + user.getCorreo());
                         Log.d("pepe", "contrasenya : " + user.getContrasenya());
@@ -161,7 +170,6 @@ public class Login extends AppCompatActivity {
                                         if(verdad.getEstado()){
 
                                             //Si todo es correcto guardo la sesion
-
                                             myEditor.putBoolean("sesion", verdad.getEstado());
                                             myEditor.putString("contrasenya2", contrasenya.getText().toString());
                                             myEditor.commit();
@@ -188,9 +196,79 @@ public class Login extends AppCompatActivity {
                     }
                 });
 
+        guardarPlaca2();
+
+        //Log.d("ID_placa Login", String.valueOf(myPreferences.getInt("ID_user", 0)));
 
     }
 
+    public void guardarPlaca2(){
+        int id = myPreferences.getInt("ID_user", 0);
+        Log.d("xd", "pulsarLogin: " + id);
+        AndroidNetworking.get("http://" + ip + ":8080/buscarPlacaConId/" + id)
+                .addPathParameter("userId", "1")
+                .setTag(this)
+                .setPriority(Priority.LOW)
+                .build()
+                .getAsObject(Placa.class, new ParsedRequestListener<Placa>() {
+                    @Override
+                    public void onResponse(Placa placa) {
+                        Log.d("chino", "id_placa : " + placa.getID_placa());
+                        Log.d("chino", "id_user : " + placa.getID_user());
+                        Log.d("chino", "uuid : " + placa.getUuid());
+                        Log.d("chino", "estado: " + placa.getEstadoPlaca());
+                        myEditor.putInt("ID_placa", placa.getID_placa());
+                        myEditor.putString("UUID_placa", placa.getUuid());
+                        myEditor.commit();
+                        Log.d("chino", "onResponse: id_placa " + myPreferences.getInt("ID_placa", 0));
+                        Log.d("chino", "onResponse: id_placa " + myPreferences.getString("UUID_placa", null));
+
+                    }
+                    @Override
+                    public void onError(ANError anError) {
+                        Log.d("chino", "error : " + anError);
+                    }
+                });
+        //
+
+    }
+
+    public void guardarPlaca(){
+
+        int id = myPreferences.getInt("ID_user", 0);
+        Log.d("xd", "pulsarLogin: " + id);
+
+        AndroidNetworking.get("http://" + ip + ":8080/buscarPlacaConId/" + id)
+                .setTag(this)
+                .setPriority(Priority.LOW)
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            Log.d("getPlaca", "entra ");
+
+                            String uuid = response.getString("uuid");
+                            int id = response.getInt("ID_placa");
+
+
+                            myEditor.putInt("ID_placa", id);
+                            myEditor.putString("UUID_placa", uuid);
+                            Log.d("LOG PLACA_ID", String.valueOf(myPreferences.getInt("ID_placa",0)));
+
+                            myEditor.commit();
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+                    }
+                });
+
+    }
     // .................................................................
     // view: View
     // -->
