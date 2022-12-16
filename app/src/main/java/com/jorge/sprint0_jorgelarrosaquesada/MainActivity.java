@@ -40,8 +40,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
@@ -66,14 +69,13 @@ import com.google.zxing.integration.android.IntentResult;
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     //Se declran las variables
-//    String ip = "172.20.10.2";
     String ip = new LogicaFake().getIp();
 
     Boolean sesion;
     ImageView devices;
     private int ultimaMedida;
-    private float major_datos;
-    private int minor_datos;
+    private int major_datos;
+    private float minor_datos;
     private int rssi2;
     private ImageView perfil;
     private ImageView information;
@@ -108,6 +110,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     // --------------------------------------------------------------
     private BluetoothLeScanner elEscanner;
     private ScanCallback callbackDelEscaneo = null;
+    private String direccion;
+    private int distance;
+    private TextView distanciaDelSensor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,6 +134,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         Log.d("datos", ": " + myPreferences.getString("nombre", "unknown"));
         Log.d("datos", ": " + myPreferences.getString("apellidos", "unknown"));
         Log.d("datos", ": " + myPreferences.getString("estado", "unknown"));
+        Log.d("datos", ": " + myPreferences.getInt("ID_placa", 0));
+
 
 
         //mapa
@@ -144,9 +151,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         //Compruebo si el usuario tiene una placa asociada
         int ID_placa = myPreferences.getInt("ID_placa", 0);
-        String UUID_user = myPreferences.getString("UUID_placa","TEST-GTI-TEST-00");
+        String UUID_placa = myPreferences.getString("UUID_placa","TEST-GTI-TEST-00");
+
         Log.d("ID PLACA ON CREATE", String.valueOf(ID_placa));
-        Log.d("UUID PLACA ON CREATE", myPreferences.getString("UUID_placa", "test"));
+        Log.d("UUID PLACA ON CREATE", myPreferences.getString("UUID_placa", "noTest"));
 
 
 
@@ -174,6 +182,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         buttonScan = findViewById(R.id.imageView8);
         devices = findViewById(R.id.profileImage);
         distanciaSensor = findViewById(R.id.distanciaDelSensor);
+        distanciaDelSensor = findViewById(R.id.distanciaDelSensor);
 
         //Botón que te lleva a la pestaña de EditPerfil.
         perfil.setOnClickListener(new View.OnClickListener() {
@@ -189,6 +198,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, InformacionAdicional.class);
+                intent.putExtra("ID_placa", myPreferences.getInt("ID_placa", 0));
                 startActivity(intent);
             }
         });
@@ -217,54 +227,19 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         Log.d("placa", "onCreate: placa esta coño"+ myPreferences.getInt("ID_placa", 0));
         inicializarBlueTooth();
 
-        ejecutarDelay();
-        String stringuuid = "EPSG-GTI-PROY-3A";
-        UUID uuid = Utilidades.stringToUUID(stringuuid);
-        buscarEsteDispositivoBTLE(Utilidades.stringToUUID(stringuuid));
+
+        Log.d("ID_PLACA ON CREATE", String.valueOf(ID_placa));
+        if(ID_placa > 0){
+            Log.d("MAIN ACTIVITY IF", "HA ENTRADO AL IF");
+            ejecutarDelay();
+            String stringuuid = "EPSG-GTI-PROY-3A";
+            buscarEsteDispositivoBTLE(Utilidades.stringToUUID(stringuuid));
+        }
 
         Log.d(ETIQUETA_LOG, " onCreate(): termina ");
 
     } // onCreate()
 
-
-    // .................................................................
-    //  resultado: ScanResult
-    //  -->
-    // mostrarInformacionDispositivoBTLE()
-    //
-    // Esta función busca todos los dispositivo
-    // .................................................................
-    private void getDeviceInfo() {
-        AndroidNetworking.get("http://" + ip + ":8080/buscarPlacaConId/" + myPreferences.getInt("ID_user", 0))
-                .setTag(this)
-                .setPriority(Priority.LOW)
-                .build()
-                .getAsJSONObject(new JSONObjectRequestListener() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            Log.d("ID_USUARIO", String.valueOf(myPreferences.getInt("ID_user", 0)));
-
-                            String uuid = response.getString("uuid");
-                            int id = response.getInt("ID_placa");
-                            Log.d("ID GETDEVICEINFO", String.valueOf(id));
-
-
-                            myEditor.putInt("ID_placa", id);
-                            myEditor.putString("UUID_placa", uuid);
-
-                            myEditor.commit();
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    @Override
-                    public void onError(ANError anError) {
-                    }
-                });
-    }
 
 
     // .................................................................
@@ -285,7 +260,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         rssi2 = rssi;
 
 
-
         Log.d(ETIQUETA_LOG, "----------------------------------------------------");
         Log.d(ETIQUETA_LOG, "------------ DISPOSITIVO DETECTADO BTLE ------------");
         Log.d(ETIQUETA_LOG, "----------------------------------------------------");
@@ -294,7 +268,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         ParcelUuid[] puuids = bluetoothDevice.getUuids();
 
-
+        direccion = bluetoothDevice.getAddress();
         Log.d(ETIQUETA_LOG, " dirección = " + bluetoothDevice.getAddress());
         Log.d("rssi", " rssi = " + rssi2);
 
@@ -324,8 +298,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         Log.d(ETIQUETA_LOG, "----------------------------------");
         Log.d(ETIQUETA_LOG, "");
 
-        int distance = 10^((tib.getTxPower() - rssi2 )/10*4 );
-        Log.d("Distancia", distance + "nombre" +  Utilidades.bytesToString(tib.getUUID()));
+        distance = 10^((tib.getTxPower() - rssi2 )/10*4 );
+        float distance2 = 10^((tib.getTxPower())-Math.abs(rssi)/(10*3));
+
+        //Log.d("rssi", Math.abs(rssi) + "nombre" +  direccion);
+        //Log.d("Distancia1", distance + "nombre" +  direccion);
+        //Log.d("Distancia2", distance2 + "nombre" +  direccion);
+
+
 
     } // ()
 
@@ -380,55 +360,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     } // ()
 
 
-    private void buscarEsteDispositivoBTLE2(final String dispositivoBuscado) {
-        Log.d(ETIQUETA_LOG, " buscarEsteDispositivoBTLE(): empieza ");
-
-        Log.d(ETIQUETA_LOG, "  buscarEsteDispositivoBTLE(): instalamos scan callback ");
-
-
-        // super.onScanResult(ScanSettings.SCAN_MODE_LOW_LATENCY, result); para ahorro de energía
-
-        this.callbackDelEscaneo = new ScanCallback() {
-            @Override
-            public void onScanResult(int callbackType, ScanResult resultado) {
-                super.onScanResult(callbackType, resultado);
-                Log.d(ETIQUETA_LOG, "  buscarEsteDispositivoBTLE(): onScanResult() ");
-
-                mostrarInformacionDispositivoBTLE(resultado);
-            }
-
-            @Override
-            public void onBatchScanResults(List<ScanResult> results) {
-                super.onBatchScanResults(results);
-                Log.d(ETIQUETA_LOG, "  buscarEsteDispositivoBTLE(): onBatchScanResults() ");
-
-            }
-
-            @Override
-            public void onScanFailed(int errorCode) {
-                super.onScanFailed(errorCode);
-                Log.d(ETIQUETA_LOG, "  buscarEsteDispositivoBTLE(): onScanFailed() ");
-
-            }
-        };
-
-        ScanFilter sf = new ScanFilter.Builder().setDeviceName(dispositivoBuscado).build();
-        Log.d(ETIQUETA_LOG, "  buscarEsteDispositivoBTLE(): empezamos a escanear buscando: " + dispositivoBuscado);
-        //Log.d(ETIQUETA_LOG, "  buscarEsteDispositivoBTLE(): empezamos a escanear buscando: " + dispositivoBuscado
-        //      + " -> " + Utilidades.stringToUUID( dispositivoBuscado ) );
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        this.elEscanner.startScan(this.callbackDelEscaneo);
-    } // ()
 
     // .................................................................
     //
@@ -544,11 +475,17 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         //Valor
         medida.setValor(valor);
 
-        //Fecha actual
+        //Fecha para calcular la notificacion
         int ahora = (int) System.currentTimeMillis();
 
-        Log.d("AHORA TIME LONG", String.valueOf(ahora));
-        medida.setTiempo(ahora);
+        //Fecha para crear la medida
+        long ahoraMedida = System.currentTimeMillis();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date resultdate = new Date(ahoraMedida);
+        String fechaMedida = sdf.format(resultdate);
+        Log.d("AHORA TIME LONG", sdf.format(resultdate));
+        Log.d("AHORA TIME LONG2", String.valueOf(ahoraMedida));
+        medida.setTiempo(fechaMedida);
 
         //Nombre del Sensor
         String nombre_sensor;
@@ -558,14 +495,19 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             nombre_sensor = "Ozono";
         }
 
-        //        Calculando la diferencia de tiempo entre la ultima medida y la hora actual. Si el tiempo supera 2 minutos envia la notificacion
+        //Calculando la diferencia de tiempo entre la ultima medida y la hora actual. Si el tiempo supera 2 minutos envia la notificacion
         long tMinTotal = System.currentTimeMillis() / (60 * 1000);
-        long minMedida = medida.getTiempo() / (60*1000);
+        long minMedida = ahora / (60*1000);
         long milliseconds = tMinTotal - minMedida;
         int minutes = (int) ((milliseconds / (1000 * 60)) % 60);
-        Log.d("minutos", "Minutos obtenidos " + String.valueOf(minutes));
-        Log.d("minutos", "Minutos de la Medida " + String.valueOf(minMedida));
-        Log.d("minutos", "Minutos de ahora " + String.valueOf(tMinTotal));
+
+        SimpleDateFormat sdf3 = new SimpleDateFormat("yyyy-MM-dd mm");
+
+
+
+        //Log.d("minutos", "Minutos obtenidos " + String.valueOf(minutes));
+        //Log.d("minutos", "Minutos de la Medida " + String.valueOf(minMedida));
+        //Log.d("minutos", "Minutos de ahora " + String.valueOf(tMinTotal));
 
 //        if(minutes>2) {
 //            notificaciones = new ClaseLanzarNotificaciones(getApplicationContext());
@@ -573,10 +515,16 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 //            insertarNotificacion("Desconectado","El sensor esta desconectado o fuera del alcance");
 //        }
 
+        long ahoraJA = System.currentTimeMillis();
         if(valor > 60){
             notificaciones = new ClaseLanzarNotificaciones(getApplicationContext());
             notificaciones.crearNotificacion("Limite alcanzado","Alto nivel de ozono por la zona");
             insertarNotificacion("Limite alcanzado", "Alto nivel de ozono por la zona");
+        }else if(ahoraMedida + 120 == ahoraJA)
+        {
+            notificaciones = new ClaseLanzarNotificaciones(getApplicationContext());
+            notificaciones.crearNotificacion("NO TE LLEGAN MEDIDAS","123456");
+            insertarNotificacion("NO TE LLEGAN MEDIDAS", "123465");
         }
 //        else if(valurNull.equals(null) || ){
 //            notificaciones = new ClaseLanzarNotificaciones(getApplicationContext());
@@ -593,8 +541,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         @SuppressLint("MissingPermission") Location location = locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
         Coordenada coordenada = new Coordenada();
-        coordenada.setX((float) location.getLongitude());
-        coordenada.setY((float) location.getLatitude());
+        coordenada.setX((float) -0.1833300);
+        coordenada.setY((float) 38.9666700);
 
         medida.setCoordenada(coordenada);
         return medida;
@@ -609,8 +557,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     // .................................................................
     public void botonEnviarAlServidor() {
         //Medida medida = guardarMedida("Test",major_datos, minor_datos);
-        Medida medida = guardarMedida(major_datos, minor_datos);
+        Medida medida = guardarMedida(minor_datos,major_datos);
         ultimaMedida = (int) medida.getValor();
+
+        //Random rand = new Random();
+        //rand.nextInt(100 - 0 + 1) + 0)
 
         //Envíar datos POST
         JSONObject jsonObject = new JSONObject();
@@ -700,16 +651,22 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     //
     // Esta función llama a botonEnviarAlServidor() tras 10 segundos
     // .................................................................
-    private void ejecutarDelay() {
+    public void ejecutarDelay() {
 
+        Log.d("Ha entrado", "Ha entrado");
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
                 //what you want to do
-                botonEnviarAlServidor();
+                if(Objects.equals(direccion, "EE:32:49:23:4F:89")){
+                    botonEnviarAlServidor();
+                    Log.d("Distancia1", distance + "nombre" +  direccion);
+                    distanciaSensor(distance);
+                    Log.d("Subido", "Medida subida");
+                }
                 //buscarEsteDispositivoBTLE2(myPreferences.getString("UUID_placa", "null"));
             }
-        }, 0, 10000);//wait 0 ms before doing the action and do it evry 10000ms (10second)
+        }, 0, 1000);//wait 0 ms before doing the action and do it evry 10000ms (10second)
     }
 
 
@@ -739,7 +696,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         //LatLng real = new LatLng(0, 0);
 
-        LatLng real = new LatLng(location.getLatitude(), location.getLongitude());
+        LatLng real = new LatLng( 38.9666700, -0.1833300);
 
         mapa.animateCamera(CameraUpdateFactory.newLatLngZoom(real,12));
 
@@ -748,7 +705,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     //Métodos get y post sensor
     public void enviarUUIDAlServidor() {
-        Medida medida = guardarMedida(major_datos, minor_datos);
+        Medida medida = guardarMedida((float) major_datos, (int) minor_datos);
         ultimaMedida = (int) medida.getValor();
 
         //Envíar datos POST
@@ -850,6 +807,16 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         return notificacion;
     }
 
+    private void distanciaSensor(int distance){
+        Log.d("Distancia", "distanciaSensor: " + distance);
+        if(distance < 0){
+            distanciaDelSensor.setText("Cerca");
+        } else if (distance > 0 && distance < 8){
+            distanciaDelSensor.setText("Medio");
+        }else {
+            distanciaDelSensor.setText("Lejos");
+        }
+    }
 
 }
 

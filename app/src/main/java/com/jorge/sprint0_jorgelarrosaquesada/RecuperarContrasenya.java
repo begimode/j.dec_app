@@ -23,7 +23,7 @@ import java.util.Random;
 
 public class RecuperarContrasenya extends AppCompatActivity {
 
-    String ip = "192.168.96.243";
+    String ip = new LogicaFake().getIp();
     EditText correo;
     Button enviar;
 

@@ -32,7 +32,7 @@ import java.util.Timer;
 public class EditarPerfil extends AppCompatActivity {
 
     //Se declran las variables
-    String ip = "192.168.96.243";
+    String ip = new LogicaFake().getIp();
 
 
     ImageView atras;
@@ -168,7 +168,6 @@ public class EditarPerfil extends AppCompatActivity {
 
                     @Override
                     public void onError(ANError error) {
-                        //Log.d("hola", "onError: " + error);
                         pulsarCerrarSesion2();
                         new MainActivity().pararTimer();
                         new MainActivity().detenerBusquedaDispositivosBTLE();
@@ -205,7 +204,7 @@ public class EditarPerfil extends AppCompatActivity {
         sesion = myPreferences.getBoolean("sesion", false);
         myEditor.commit();
 
-        //Log.d("test", "onCreate: " + sesion);
+        Log.d("ID PLACA EDITAR PERFIL", String.valueOf(myPreferences.getInt("ID_placa", 99)));
 
 
         Intent intent = new Intent(EditarPerfil.this, Login.class);
@@ -240,6 +239,8 @@ public class EditarPerfil extends AppCompatActivity {
         myEditor.putInt("ID_placa", 0);
         myEditor.putString("UUID_placa", null);
         myEditor.commit();
+
+        Log.d("ID PLACA EDITAR PERFIL", String.valueOf(myPreferences.getInt("ID_user", 99)));
 
         new MainActivity().pararTimer();
         new MainActivity().detenerBusquedaDispositivosBTLE();

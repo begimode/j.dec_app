@@ -28,7 +28,7 @@ import java.util.Date;
 public class ClaseLanzarNotificaciones {
 
     //Se declran las variables
-    String ip = "192.168.1.103";
+    String ip = new LogicaFake().getIp();
 
 
     private final Context context;

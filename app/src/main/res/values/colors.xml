@@ -8,6 +8,11 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
+    <color name="CardVerde">#36CA3C</color>
+    <color name="CardNaranja">#F1950E</color>
+    <color name="CardRojo">#F34848</color>
+
+
     <color name="inputBorder">#F2F2F2</color>
     <color name="button">#4EA69D</color>
     <color name="title">#253140</color>

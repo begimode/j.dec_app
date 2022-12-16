@@ -2,6 +2,8 @@ package com.jorge.sprint0_jorgelarrosaquesada;
 
 import android.util.Log;
 
+import java.util.Date;
+
 //----------------------------------------------------
 // Archivo: Medida.java
 // J.Dec
@@ -12,7 +14,7 @@ public class Medida {
 
     //Atributos
     private float valor;
-    private int tiempo;
+    private String tiempo;
     private String nombre_sensor;
     private Coordenada coordenada;
 
@@ -21,7 +23,7 @@ public class Medida {
     private String tipo_medida;
 
     //Constructor que crea un objeto coordenada pasando los datos
-    public Medida(float valor, int tiempo, String nombre_sensor, Coordenada coordenada) {
+    public Medida(float valor, String tiempo, String nombre_sensor, Coordenada coordenada) {
         this.valor = valor;
         this.tiempo = tiempo;
         this.nombre_sensor = nombre_sensor;
@@ -41,11 +43,11 @@ public class Medida {
         this.valor = valor;
     }
 
-    public int getTiempo() {
+    public String getTiempo() {
         return tiempo;
     }
 
-    public void setTiempo(int tiempo) {
+    public void setTiempo(String tiempo) {
         this.tiempo = tiempo;
     }
 

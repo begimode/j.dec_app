@@ -29,7 +29,7 @@ public class Registrar extends AppCompatActivity {
 
     //Se declaran las variables
 
-    String ip = "192.168.96.243";
+    String ip = new LogicaFake().getIp();
 
     EditText correo;
     EditText contrasenya;

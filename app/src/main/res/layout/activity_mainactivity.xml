@@ -59,7 +59,7 @@
         android:layout_weight="1"
         android:gravity="center"
         android:text="Información"
-        android:textSize="10sp"
+        android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

@@ -20,239 +20,322 @@
             android:layout_height="match_parent"
             android:fontFamily="@font/yahei"
             android:gravity="center|center_vertical"
-            android:text="Contaminantes"
+            android:text="Tu aire HOY"
             android:textStyle="bold" />
+
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/tab"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/no2_card"
-                android:layout_width="wrap_content"
-                android:layout_height="140dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginBottom="20dp"
-                app:cardCornerRadius="10dp">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="140dp"
-                    android:layout_height="140dp">
-
-                    <TextView
-                        android:id="@+id/textView17"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="Dióxido de nitrógeno"
-                        android:textColor="#353232"
-                        app:layout_constraintEnd_toEndOf="@+id/textView34"
-                        app:layout_constraintStart_toStartOf="@+id/textView34"
-                        app:layout_constraintTop_toBottomOf="@+id/textView34" />
-
-                    <TextView
-                        android:id="@+id/textView34"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="30dp"
-                        android:fontFamily="@font/yahei"
-                        android:text="NO2"
-                        android:textSize="50sp"
-                        app:layout_constraintBottom_toTopOf="@+id/textView17"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/co2_card"
-                android:layout_width="wrap_content"
-                android:layout_height="140dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="20dp"
-                app:cardCornerRadius="10dp">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="140dp"
-                    android:layout_height="140dp">
-
-                    <TextView
-                        android:id="@+id/textView17"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="Dióxido de carbono"
-                        android:textColor="#353232"
-                        app:layout_constraintEnd_toEndOf="@+id/textView34"
-                        app:layout_constraintStart_toStartOf="@+id/textView34"
-                        app:layout_constraintTop_toBottomOf="@+id/textView34" />
-
-                    <TextView
-                        android:id="@+id/textView34"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="30dp"
-                        android:fontFamily="@font/yahei"
-                        android:text="CO2"
-                        android:textSize="50sp"
-                        app:layout_constraintBottom_toTopOf="@+id/textView17"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-            </androidx.cardview.widget.CardView>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/co_card"
-                android:layout_width="140dp"
-                android:layout_height="140dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginBottom="20dp"
-                app:cardCornerRadius="10dp">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="140dp"
-                    android:layout_height="140dp">
-
-                    <TextView
-                        android:id="@+id/textView17"
-                        android:layout_width="115dp"
-                        android:layout_height="37dp"
-                        android:layout_marginTop="5dp"
-                        android:gravity="center"
-                        android:text="Monóxido de carbono"
-                        android:textColor="#353232"
-                        app:layout_constraintEnd_toEndOf="@+id/textView34"
-                        app:layout_constraintStart_toStartOf="@+id/textView34"
-                        app:layout_constraintTop_toBottomOf="@+id/textView34" />
-
-                    <TextView
-                        android:id="@+id/textView34"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="30dp"
-                        android:fontFamily="@font/yahei"
-                        android:text="CO"
-                        android:textSize="50sp"
-                        app:layout_constraintBottom_toTopOf="@+id/textView17"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/so2_card"
-                android:layout_width="140dp"
-                android:layout_height="140dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="20dp"
-                app:cardCornerRadius="10dp">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="140dp"
-                    android:layout_height="140dp">
-
-                    <TextView
-                        android:id="@+id/textView17"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="Dióxido de azufre"
-                        android:textColor="#353232"
-                        app:layout_constraintEnd_toEndOf="@+id/textView33"
-                        app:layout_constraintStart_toStartOf="@+id/textView33"
-                        app:layout_constraintTop_toBottomOf="@+id/textView33" />
-
-                    <TextView
-                        android:id="@+id/textView33"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="30dp"
-                        android:fontFamily="@font/yahei"
-                        android:text="SO2"
-                        android:textSize="50sp"
-                        app:layout_constraintBottom_toTopOf="@+id/textView17"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-            </androidx.cardview.widget.CardView>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/o3_card"
-                android:layout_width="140dp"
-                android:layout_height="140dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginBottom="20dp"
-                app:cardCornerRadius="10dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="161dp"
+                    android:orientation="vertical">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/textView42"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="refrescar"
+                            app:layout_constraintBottom_toBottomOf="@+id/actualizarBoton"
+                            app:layout_constraintEnd_toStartOf="@+id/actualizarBoton"
+                            app:layout_constraintTop_toTopOf="@+id/actualizarBoton" />
+
+                        <ImageView
+                            android:id="@+id/actualizarBoton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="2dp"
+                            app:layout_constraintBottom_toTopOf="@+id/contaminacion"
+                            app:layout_constraintEnd_toEndOf="@+id/contaminacion"
+                            app:srcCompat="@drawable/refresh_icon" />
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/contaminacion"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="22dp"
+                            android:layout_marginEnd="20dp"
+                            android:layout_marginBottom="15dp"
+                            app:cardBackgroundColor="#D61111"
+                            app:cardCornerRadius="10dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="0.49">
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/calidadCard"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                                <TextView
+                                    android:id="@+id/calidadValor"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="20dp"
+                                    android:fontFamily="@font/yahei"
+                                    android:text="15%"
+                                    android:textColor="#FFFFFF"
+                                    android:textSize="25sp"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        </androidx.cardview.widget.CardView>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/no2_card"
+                    android:layout_width="wrap_content"
+                    android:layout_height="140dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginBottom="20dp"
+                    app:cardCornerRadius="10dp">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="140dp"
+                        android:layout_height="140dp">
+
+                        <TextView
+                            android:id="@+id/textView17"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="Dióxido de nitrógeno"
+                            android:textColor="#353232"
+                            app:layout_constraintEnd_toEndOf="@+id/textView34"
+                            app:layout_constraintStart_toStartOf="@+id/textView34"
+                            app:layout_constraintTop_toBottomOf="@+id/textView34" />
+
+                        <TextView
+                            android:id="@+id/textView34"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="30dp"
+                            android:fontFamily="@font/yahei"
+                            android:text="NO2"
+                            android:textSize="50sp"
+                            app:layout_constraintBottom_toTopOf="@+id/textView17"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/co2_card"
+                    android:layout_width="wrap_content"
+                    android:layout_height="140dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="20dp"
+                    app:cardCornerRadius="10dp">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="140dp"
+                        android:layout_height="140dp">
+
+                        <TextView
+                            android:id="@+id/textView17"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="Dióxido de carbono"
+                            android:textColor="#353232"
+                            app:layout_constraintEnd_toEndOf="@+id/textView34"
+                            app:layout_constraintStart_toStartOf="@+id/textView34"
+                            app:layout_constraintTop_toBottomOf="@+id/textView34" />
+
+                        <TextView
+                            android:id="@+id/textView34"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="30dp"
+                            android:fontFamily="@font/yahei"
+                            android:text="CO2"
+                            android:textSize="50sp"
+                            app:layout_constraintBottom_toTopOf="@+id/textView17"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/co_card"
                     android:layout_width="140dp"
-                    android:layout_height="140dp">
+                    android:layout_height="140dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginBottom="20dp"
+                    app:cardCornerRadius="10dp">
 
-                    <TextView
-                        android:id="@+id/textView17"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="Ozono"
-                        android:textColor="#353232"
-                        app:layout_constraintEnd_toEndOf="@+id/textoOzono"
-                        app:layout_constraintStart_toStartOf="@+id/textoOzono"
-                        app:layout_constraintTop_toBottomOf="@+id/textoOzono" />
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="140dp"
+                        android:layout_height="140dp">
 
-                    <TextView
-                        android:id="@+id/textoOzono"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="30dp"
-                        android:fontFamily="@font/yahei"
-                        android:text="03"
-                        android:textSize="50sp"
-                        app:layout_constraintBottom_toTopOf="@+id/textView17"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        <TextView
+                            android:id="@+id/textView17"
+                            android:layout_width="115dp"
+                            android:layout_height="37dp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center"
+                            android:text="Monóxido de carbono"
+                            android:textColor="#353232"
+                            app:layout_constraintEnd_toEndOf="@+id/textView34"
+                            app:layout_constraintStart_toStartOf="@+id/textView34"
+                            app:layout_constraintTop_toBottomOf="@+id/textView34" />
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                        <TextView
+                            android:id="@+id/textView34"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="30dp"
+                            android:fontFamily="@font/yahei"
+                            android:text="CO"
+                            android:textSize="50sp"
+                            app:layout_constraintBottom_toTopOf="@+id/textView17"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-            </androidx.cardview.widget.CardView>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/so2_card"
+                    android:layout_width="140dp"
+                    android:layout_height="140dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="20dp"
+                    app:cardCornerRadius="10dp">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="140dp"
+                        android:layout_height="140dp">
+
+                        <TextView
+                            android:id="@+id/textView17"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="Dióxido de azufre"
+                            android:textColor="#353232"
+                            app:layout_constraintEnd_toEndOf="@+id/textView33"
+                            app:layout_constraintStart_toStartOf="@+id/textView33"
+                            app:layout_constraintTop_toBottomOf="@+id/textView33" />
+
+                        <TextView
+                            android:id="@+id/textView33"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="30dp"
+                            android:fontFamily="@font/yahei"
+                            android:text="SO2"
+                            android:textSize="50sp"
+                            app:layout_constraintBottom_toTopOf="@+id/textView17"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/o3_card"
+                    android:layout_width="140dp"
+                    android:layout_height="140dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginBottom="20dp"
+                    app:cardCornerRadius="10dp">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="140dp"
+                        android:layout_height="140dp">
+
+                        <TextView
+                            android:id="@+id/textView17"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="Ozono"
+                            android:textColor="#353232"
+                            app:layout_constraintEnd_toEndOf="@+id/textoOzono"
+                            app:layout_constraintStart_toStartOf="@+id/textoOzono"
+                            app:layout_constraintTop_toBottomOf="@+id/textoOzono" />
+
+                        <TextView
+                            android:id="@+id/textoOzono"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="30dp"
+                            android:fontFamily="@font/yahei"
+                            android:text="03"
+                            android:textSize="50sp"
+                            app:layout_constraintBottom_toTopOf="@+id/textView17"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
 
         </LinearLayout>
-
-    </LinearLayout>
+    </ScrollView>
 
     <LinearLayout
         android:id="@+id/tab"

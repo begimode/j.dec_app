@@ -35,12 +35,13 @@ import java.util.List;
 public class Login extends AppCompatActivity {
 
     //Se declaran las variables
-    String ip = "192.168.96.243";
+    String ip = new LogicaFake().getIp();
 
 
     //Sirve para guardar datos permanentes
     SharedPreferences myPreferences;
     SharedPreferences.Editor myEditor;
+
     boolean sesion;
     EditText correo;
     EditText contrasenya;
@@ -55,6 +56,10 @@ public class Login extends AppCompatActivity {
         myPreferences = PreferenceManager.getDefaultSharedPreferences(Login.this);
         myEditor = myPreferences.edit();
 
+//        myEditor.putInt("ID_placa", 0);
+//        myEditor.putInt("ID_user", 0);
+//        myEditor.commit();
+
         //Obtengo de la memoria interna el valor de la sesion
         sesion = myPreferences.getBoolean("sesion", false);
 
@@ -68,14 +73,13 @@ public class Login extends AppCompatActivity {
         Log.d("datos", "Estado de la sesion: " + sesion);
         */
 
+
+
         //Compruebo si la sesion este iniciada y si es así pasa al MainActivity
-        /*
         if(sesion){
             Intent intent = new Intent(Login.this, MainActivity.class);
             startActivity(intent);
         }
-
-         */
 
 
 
@@ -115,6 +119,8 @@ public class Login extends AppCompatActivity {
             }
         });
 
+        Log.d("datos", ": login " + myPreferences.getInt("ID_placa", 99));
+
     }
 
     // .................................................................
@@ -128,7 +134,6 @@ public class Login extends AppCompatActivity {
     private void pulsarLogin(View view){
 
         AndroidNetworking.get("http://" + ip + ":8080/usuario/" + correo.getText().toString())
-                .addPathParameter("userId", "1")
                 .setTag(this)
                 .setPriority(Priority.LOW)
                 .build()
@@ -138,6 +143,7 @@ public class Login extends AppCompatActivity {
 
                         String id = Integer.toString(user.getID_user());
                         int id_ = Integer.parseInt(id);
+                        Log.d("ID PRIMERO", String.valueOf(id_));
                         //Guardo los valores de la sesion
                         myEditor.putString("correo", user.getCorreo());
                         myEditor.putString("contrasenya", user.getContrasenya());
@@ -157,9 +163,15 @@ public class Login extends AppCompatActivity {
                         Log.d("pepe", "apellidos : " + user.getApellidos());
                         Log.d("pepe", "estado : " + user.getEstado());
                         Log.d("pepe", "ID_user : " +  myPreferences.getInt("ID_user", 0));
+                        Log.d("pepe", "ID_placa : " +  myPreferences.getInt("ID_placa", 0));
+
+
+                        int idUser = myPreferences.getInt("ID_user", 0);
+                        Log.d("GUARDARPLACA1", String.valueOf(myPreferences.getInt("ID_user", 0)));
+                        Log.d("GUARDARPLACA1", String.valueOf(idUser));
+                        guardarPlaca2(idUser);
 
                         AndroidNetworking.get("http://" + ip + ":8080/desencriptar3?hash="+user.getContrasenya()+"&cont="+contrasenya.getText().toString())
-                                .addPathParameter("userId", "1")
                                 .setTag(this)
                                 .setPriority(Priority.LOW)
                                 .build()
@@ -196,17 +208,13 @@ public class Login extends AppCompatActivity {
                     }
                 });
 
-        guardarPlaca2();
-
-        //Log.d("ID_placa Login", String.valueOf(myPreferences.getInt("ID_user", 0)));
-
     }
 
-    public void guardarPlaca2(){
-        int id = myPreferences.getInt("ID_user", 0);
-        Log.d("xd", "pulsarLogin: " + id);
-        AndroidNetworking.get("http://" + ip + ":8080/buscarPlacaConId/" + id)
-                .addPathParameter("userId", "1")
+    public void guardarPlaca2(int idUser){
+
+        Log.d("GUARDARPLACA2()", String.valueOf(idUser));
+
+        AndroidNetworking.get("http://" + ip + ":8080/buscarPlacaConId/" + idUser)
                 .setTag(this)
                 .setPriority(Priority.LOW)
                 .build()
@@ -223,10 +231,15 @@ public class Login extends AppCompatActivity {
                         Log.d("chino", "onResponse: id_placa " + myPreferences.getInt("ID_placa", 0));
                         Log.d("chino", "onResponse: id_placa " + myPreferences.getString("UUID_placa", null));
 
+                        //new MainActivity().ejecutarDelay();
                     }
                     @Override
                     public void onError(ANError anError) {
-                        Log.d("chino", "error : " + anError);
+                        myEditor.putInt("ID_placa", -1);
+                        myEditor.putString("UUID_placa", "test");
+                        myEditor.commit();
+
+                        Log.d("chino2", "error : " + myPreferences.getInt("ID_placa", -4));
                     }
                 });
         //

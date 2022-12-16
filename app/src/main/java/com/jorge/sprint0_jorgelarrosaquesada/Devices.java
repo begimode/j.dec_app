@@ -36,7 +36,7 @@ import java.util.List;
 public class Devices extends AppCompatActivity {
 
     //Se declaran las variables
-    String ip = "192.168.1.103";
+    String ip = new LogicaFake().getIp();
 
     //Textviews
     TextView nombreDispositivo;
@@ -159,8 +159,8 @@ public class Devices extends AppCompatActivity {
 
                         for (Medida medida : medidas) {
                             listaValores.add((int) medida.getValor());
-                            listaFechas.add(medida.getTiempo());
-                            listaUbicacion.add(medida.getCoordenada());
+                            //listaFechas.add(medida.getTiempo());
+                            //listaUbicacion.add(medida.getCoordenada());
 
                             Log.d("LISTA FECHAS", String.valueOf(listaFechas));
 
@@ -168,10 +168,9 @@ public class Devices extends AppCompatActivity {
                             maxMedida = Collections.max(listaValores);
                             minMedida = Collections.min(listaValores);
                             lastMedida = listaValores.get(listaValores.size()-1);
-                            lastFecha = listaFechas.get(listaFechas.size()-1);
 
                         }
-                        mostrarMedidas(maxMedida, minMedida, lastMedida, lastFecha);
+                        mostrarMedidas(maxMedida, minMedida, lastMedida);
 
                     }
                     @Override
@@ -181,11 +180,13 @@ public class Devices extends AppCompatActivity {
                 });
     }
 
-    private void mostrarMedidas(Integer maxMedida, Integer minMedida, Integer lastMedida, Integer lastFecha) {
+
+    private void mostrarMedidas(Integer maxMedida, Integer minMedida, Integer lastMedida) {
         MaxMedicion.setText(maxMedida.toString());
         MinMedicion.setText(minMedida.toString());
         LastMedicion.setText(lastMedida.toString());
     }
+
 
     private void deleteDevice() {
         AndroidNetworking.delete("")
